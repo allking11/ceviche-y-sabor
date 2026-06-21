@@ -73,82 +73,99 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // FLY-TO-CART ANIMATION
+  // FLY-TO-CART ANIMATION (Mobile-Optimised)
   // ==========================================
   function flyToCart(originElement) {
     const cartTrigger = document.getElementById('cartTrigger');
     const cartBadge   = document.getElementById('cartBadge');
     if (!cartTrigger || !originElement) return;
 
-    // Source position (center of origin button)
+    // Use getBoundingClientRect — always viewport-relative (works with scroll & zoom)
     const srcRect  = originElement.getBoundingClientRect();
     const destRect = cartTrigger.getBoundingClientRect();
 
+    // Guard: If cart trigger is fully off-screen (e.g. hidden on mobile), bail gracefully
+    // Instead do just the badge bounce for a quick feedback
+    const cartIsVisible = destRect.width > 0 && destRect.height > 0
+      && destRect.top >= -destRect.height
+      && destRect.top <= (window.innerHeight || document.documentElement.clientHeight);
+
+    // Starting position = center of pressed button, using fixed coords
     const startX = srcRect.left + srcRect.width / 2;
     const startY = srcRect.top  + srcRect.height / 2;
-    const endX   = destRect.left + destRect.width / 2;
-    const endY   = destRect.top  + destRect.height / 2;
 
-    // Create the flying particle
+    if (!cartIsVisible) {
+      // Cart icon not on screen — just animate a small pulse on the button and update badge
+      originElement.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.35)', offset: 0.3 },
+        { transform: 'scale(1)' },
+      ], { duration: 300, easing: 'ease' });
+      return;
+    }
+
+    const endX = destRect.left + destRect.width / 2;
+    const endY = destRect.top  + destRect.height / 2;
+
+    // Create particle anchored at the start position via position:fixed
     const particle = document.createElement('div');
     particle.className = 'fly-to-cart-particle';
     particle.textContent = '+';
-    particle.style.left = `${startX - 9}px`;  // 9 = half of 18px width
+    // Place it at the origin using fixed positioning — avoids scroll offset issues
+    particle.style.left = `${startX - 9}px`;
     particle.style.top  = `${startY - 9}px`;
     document.body.appendChild(particle);
 
-    // Animate via Web Animations API for smooth GPU-composited motion
+    // Compute delta from particle's fixed start → cart icon
     const dx = endX - startX;
     const dy = endY - startY;
 
-    // Calculate arc control point (curve upward slightly before arriving)
-    const arcX = startX + dx * 0.5;
-    const arcY = Math.min(startY, endY) - Math.abs(dy) * 0.35;
+    // Arc control point: midpoint, shifted upward by 30–40% of travel distance
+    // On small screens (short dy) we use a gentler arc so the particle stays visible
+    const arcLift = Math.min(Math.abs(dy) * 0.40, 80); // cap at 80px lift
+    const arcX = dx * 0.5;
+    const arcY = (dy < 0 ? -arcLift : (Math.min(startY, endY) - startY - arcLift));
 
-    const frames = 20;
+    // Build keyframes using transform:translate (GPU-composited, no layout thrash)
+    const frames = 18;
     const keyframes = [];
     for (let i = 0; i <= frames; i++) {
       const t = i / frames;
-      // Cubic bezier quadratic interpolation
-      const bx = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * arcX + t * t * endX;
-      const by = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * arcY + t * t * endY;
-      const scale = t < 0.8 ? 1 - t * 0.3 : 0.7 - (t - 0.8) * 3.5;
-      const opacity = t > 0.85 ? 1 - (t - 0.85) * 6.5 : 1;
+      // Quadratic Bézier via translate (origin = startX/startY fixed)
+      const tx = (1 - t) * (1 - t) * 0 + 2 * (1 - t) * t * arcX + t * t * dx;
+      const ty = (1 - t) * (1 - t) * 0 + 2 * (1 - t) * t * arcY + t * t * dy;
+
+      // Scale: shrinks gently during travel, sharp vanish at the end
+      const scale   = t < 0.75 ? 1 - t * 0.25 : Math.max(0, 0.75 - (t - 0.75) * 4);
+      // Opacity: visible for 85% of trip, fades quickly at the end
+      const opacity = t > 0.82 ? Math.max(0, 1 - (t - 0.82) * 5.9) : 1;
 
       keyframes.push({
-        left: `${bx - 9}px`,
-        top:  `${by - 9}px`,
-        transform: `scale(${Math.max(0, scale)})`,
-        opacity: `${Math.max(0, opacity)}`,
+        transform: `translate(${tx}px, ${ty}px) scale(${Math.max(0, scale)})`,
+        opacity:   `${opacity}`,
       });
     }
 
     const anim = particle.animate(keyframes, {
-      duration: 520,
-      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-      fill: 'forwards',
+      duration: 500,
+      easing:   'cubic-bezier(0.2, 0.8, 0.4, 1)',
+      fill:     'forwards',
     });
 
     anim.onfinish = () => {
-      // Remove particle from DOM
       particle.remove();
 
-      // Bounce the badge
+      // Badge bounce
       cartBadge.classList.remove('bounce');
-      // Force reflow so the animation resets cleanly
-      void cartBadge.offsetWidth;
+      void cartBadge.offsetWidth; // force reflow
       cartBadge.classList.add('bounce');
-      cartBadge.addEventListener('animationend', () => {
-        cartBadge.classList.remove('bounce');
-      }, { once: true });
+      cartBadge.addEventListener('animationend', () => cartBadge.classList.remove('bounce'), { once: true });
 
-      // Jiggle the cart icon
+      // Cart icon jiggle
       cartTrigger.classList.remove('jiggle');
       void cartTrigger.offsetWidth;
       cartTrigger.classList.add('jiggle');
-      cartTrigger.addEventListener('animationend', () => {
-        cartTrigger.classList.remove('jiggle');
-      }, { once: true });
+      cartTrigger.addEventListener('animationend', () => cartTrigger.classList.remove('jiggle'), { once: true });
     };
   }
 
