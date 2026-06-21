@@ -2,9 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Ceviche y Sabor — Ceviche Fresco y Catering Premium en Caracas</title>
   
+  <!-- Preconnect for Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- SEO Meta Tags -->
   <meta name="description" content="Disfruta del mejor ceviche fresco de Caracas. Delivery, pick up y catering de barra móvil, shots de ceviche, paellas y arroces para tus eventos especiales. ¡Haz tu pedido ahora por WhatsApp!">
   <meta name="keywords" content="ceviche caracas, barra movil caracas, catering caracas, delivery ceviche caracas, paellas caracas, ceviche y sabor, comida caribeña caracas">
@@ -75,7 +80,7 @@
           <i class="ph ph-shopping-bag" style="font-size: 1.5rem;"></i>
           <span class="cart-badge" id="cartBadge">0</span>
         </button>
-        <a href="#menu-section" class="btn btn-primary nav-cta-desktop" style="min-height: auto; padding: 0.65rem 1.25rem; font-size: 0.9rem;">Pedir Ahora</a>
+        <a href="#menu-section" class="btn btn-primary nav-cta-desktop" style="min-height: 48px; padding: 0.65rem 1.25rem; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center;">Pedir Ahora</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menú">
           <i class="ph ph-list" style="font-size: 1.75rem;"></i>
         </button>
@@ -116,7 +121,7 @@
       </div>
       
       <div class="hero-media-wrapper">
-        <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="food picture.jpg">
           <source src="Food showcase video.mp4" type="video/mp4">
           Tu navegador no soporta reproducción de video.
         </video>
@@ -167,7 +172,7 @@
         
         <!-- Video Tile (6col x 1row) -->
         <div class="bento-item bento-item-video">
-          <video class="bento-video" loop muted playsinline preload="none" id="bentoVideo">
+          <video class="bento-video" loop muted playsinline preload="metadata" poster="comidas2.webp" id="bentoVideo">
             <source src="food video.mp4" type="video/mp4">
           </video>
           <div class="bento-label-bottom">Preparación artesanal al instante</div>
@@ -199,7 +204,7 @@
   <section class="section-py promotion-section" id="bar-promo-section">
     <div class="container promo-grid-container">
       <div class="promo-video-wrapper">
-        <video class="promo-video" autoplay loop muted playsinline preload="metadata">
+        <video class="promo-video" autoplay loop muted playsinline preload="metadata" poster="food picture.jpg">
           <source src="ceviche barra movil video.mp4" type="video/mp4">
         </video>
       </div>
@@ -237,7 +242,7 @@
   </section>
 
   <!-- Section 4: El Catálogo / Menú Snap Scroll -->
-  <section class="section-py" id="menu-section" style="background-color: #0A0A0A;">
+  <section class="section-py" id="menu-section" style="background-color: var(--ink-deep);">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Explora <span>nuestro menú</span></h2>
@@ -751,7 +756,7 @@
               <button type="button" id="openBarQuoteBtn" class="btn btn-secondary">Cotizar Barra</button>
             </div>
             <div class="service-media">
-              <video class="service-video-element" loop muted playsinline preload="none" id="servicesVideo">
+              <video class="service-video-element" loop muted playsinline preload="metadata" poster="food picture.jpg" id="servicesVideo">
                 <source src="ceviche barra movil video.mp4" type="video/mp4">
               </video>
             </div>
@@ -779,7 +784,7 @@
   </section>
 
   <!-- Section 6: Social Proof (Video Testimonial) -->
-  <section class="section-py" style="background-color: #0A0A0A;">
+  <section class="section-py" style="background-color: var(--ink-deep);">
     <div class="container proof-grid">
       <!-- Left column: Influencer video click to play -->
       <div class="influencer-video-wrapper">
@@ -877,7 +882,7 @@
 
 
   <!-- Section 9: Contact & Map Section -->
-  <section class="section-py" id="contact-section" style="background-color: #0A0A0A;">
+  <section class="section-py" id="contact-section" style="background-color: var(--ink-deep);">
     <div class="container contact-grid">
       <div class="contact-info-panel">
         <div>
@@ -971,7 +976,7 @@
         © 2026 Ceviche y Sabor. Todos los derechos reservados.
       </div>
       <div class="credits">
-        Diseñado con <i class="ph ph-heart-break" style="color: var(--gold-vivid); vertical-align: middle;"></i> para Caracas.
+        Diseñado con <i class="ph-fill ph-heart" style="color: var(--gold-vivid); vertical-align: middle;"></i> para Caracas.
       </div>
     </div>
   </footer>
@@ -983,6 +988,7 @@
     <div class="bottom-sheet-handle"></div>
     <div class="cart-header">
       <h2 class="cart-title">Tu Pedido</h2>
+      <button type="button" class="btn-clear-cart" id="btnClearCart" style="background: transparent; border: none; color: var(--gold-vivid); font-family: var(--font-body); font-weight: 600; cursor: pointer; font-size: 0.95rem; margin-left: auto; margin-right: 1.5rem; display: none;">Vaciar</button>
       <button class="cart-close-btn" id="cartCloseBtn" aria-label="Cerrar Carrito">
         <i class="ph ph-x"></i>
       </button>

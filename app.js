@@ -96,12 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemsList = document.getElementById('cartItemsList');
     const checkoutForm = document.getElementById('checkoutForm');
     const cartFooter = document.getElementById('cartFooter');
+    const btnClearCart = document.getElementById('btnClearCart');
     
     if (cart.length === 0) {
       emptyView.style.display = 'flex';
       itemsList.style.display = 'none';
       checkoutForm.style.display = 'none';
       cartFooter.style.display = 'none';
+      if (btnClearCart) btnClearCart.style.display = 'none';
       return;
     }
 
@@ -109,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     itemsList.style.display = 'flex';
     checkoutForm.style.display = 'flex';
     cartFooter.style.display = 'block';
+    if (btnClearCart) btnClearCart.style.display = 'block';
 
     // Clear and populate items
     itemsList.innerHTML = '';
@@ -285,6 +288,20 @@ document.addEventListener('DOMContentLoaded', () => {
   cartTrigger.addEventListener('click', openCart);
   cartCloseBtn.addEventListener('click', closeCart);
   cartOverlay.addEventListener('click', closeCart);
+
+  const btnClearCart = document.getElementById('btnClearCart');
+  if (btnClearCart) {
+    btnClearCart.addEventListener('click', () => {
+      if (confirm('¿Estás seguro de que deseas vaciar tu carrito?')) {
+        cart = [];
+        updateCartState();
+        document.querySelectorAll('.quantity-controls-wrapper').forEach(wrapper => {
+          const productId = wrapper.id.replace('controls-', '');
+          updateMenuCardControls(productId);
+        });
+      }
+    });
+  }
   cartBrowseBtn.addEventListener('click', (e) => {
     e.preventDefault();
     closeCart();
@@ -418,35 +435,68 @@ document.addEventListener('DOMContentLoaded', () => {
     // Encode URL
     const whatsappUrl = `https://wa.me/584122102463?text=${encodeURIComponent(message)}`;
 
+    // Fallback clipboard copying for insecure/older contexts
+    function fallbackCopyText(text, success, error) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          success();
+        } else {
+          error();
+        }
+      } catch (err) {
+        error(err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    const handleCopySuccess = () => {
+      toastNotification.textContent = 'Pedido copiado al portapapeles. ¡Pégalo en WhatsApp!';
+      toastNotification.classList.add('active');
+      btnCheckout.textContent = '¡Copiado! Pégalo en WhatsApp';
+      btnCheckout.style.backgroundColor = 'var(--teal-vivid)';
+      btnCheckout.style.color = 'var(--text-on-teal)';
+      
+      setTimeout(() => {
+        toastNotification.classList.remove('active');
+        btnCheckout.innerHTML = `<i class="ph ph-whatsapp-logo" style="font-size: 1.25rem;"></i> Enviar Pedido a WhatsApp`;
+        btnCheckout.style.backgroundColor = 'var(--whatsapp)';
+        btnCheckout.style.color = 'var(--text-on-gold)';
+      }, 5000);
+    };
+
+    const handleCopyError = () => {
+      alert('No pudimos abrir WhatsApp ni copiar el pedido. Por favor, cópialo manualmente.');
+    };
+
     // Attempt to open WhatsApp window
     const newWindow = window.open(whatsappUrl, '_blank');
     
     if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
       // Popup blocked or deep-linking failed, use clipboard fallback
-      navigator.clipboard.writeText(message).then(() => {
-        // Show success toast
-        toastNotification.classList.add('active');
-        btnCheckout.textContent = '¡Copiado! Pégalo en WhatsApp';
-        btnCheckout.style.backgroundColor = 'var(--teal-vivid)';
-        btnCheckout.style.color = 'var(--text-on-teal)';
-        
-        setTimeout(() => {
-          toastNotification.classList.remove('active');
-          btnCheckout.innerHTML = `<i class="ph ph-whatsapp-logo" style="font-size: 1.25rem;"></i> Enviar Pedido a WhatsApp`;
-          btnCheckout.style.backgroundColor = 'var(--whatsapp)';
-          btnCheckout.style.color = 'var(--text-on-gold)';
-        }, 5000);
-      }).catch(err => {
-        alert('No pudimos abrir WhatsApp ni copiar al portapapeles. Por favor copia tu pedido manualmente.');
-      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(message)
+          .then(handleCopySuccess)
+          .catch(() => fallbackCopyText(message, handleCopySuccess, handleCopyError));
+      } else {
+        fallbackCopyText(message, handleCopySuccess, handleCopyError);
+      }
     } else {
-      // Clear cart on success and close
-      cart = [];
-      updateCartState();
-      document.querySelectorAll('.quantity-controls-wrapper').forEach(wrapper => {
-        const productId = wrapper.id.replace('controls-', '');
-        updateMenuCardControls(productId);
-      });
+      // Success opening window (redirecting)
+      toastNotification.textContent = 'Redirigiendo a WhatsApp... ¡Tu pedido se mantendrá guardado!';
+      toastNotification.classList.add('active');
+      setTimeout(() => {
+        toastNotification.classList.remove('active');
+      }, 5000);
       closeCart();
     }
   });
@@ -499,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Run GSAP sticky stack only on Desktop viewports (> 768px)
     let mm = gsap.matchMedia();
 
-    mm.add("(min-width: 769px)", () => {
+    mm.add("(min-width: 768.1px)", () => {
       const cards = gsap.utils.toArray(".stack-card");
       
       cards.forEach((card, i) => {
@@ -532,31 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================
-  // 9. CTA BANNER SCROLL ENTRANCE OBSERVER
-  // ==========================================
-  const ctaBanner = document.getElementById('ctaBanner');
-  if (ctaBanner) {
-    const ctaObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          ctaBanner.classList.add('is-visible');
-          
-          // Animate the staggered text/button children inside
-          const animElements = ctaBanner.querySelectorAll('.cta-animate');
-          animElements.forEach(el => {
-            const delay = el.getAttribute('data-delay') || 0;
-            setTimeout(() => {
-              el.classList.add('is-visible');
-            }, delay);
-          });
-          
-          ctaObserver.unobserve(ctaBanner); // Run once
-        }
-      });
-    }, { threshold: 0.15 });
-    ctaObserver.observe(ctaBanner);
-  }
+
 
   // ==========================================
   // 10. EVENT QUOTE MODAL LOGIC (DYNAMIC POP-UP)
@@ -674,4 +700,11 @@ document.addEventListener('DOMContentLoaded', () => {
       quoteForm.reset();
     });
   }
+
+  // Refresh ScrollTrigger on window load to recalculate heights after media finishes rendering
+  window.addEventListener('load', () => {
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.refresh();
+    }
+  });
 });
