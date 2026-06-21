@@ -1,0 +1,15 @@
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# Agents folder (local dev tooling, not for deploy)
+.agents/
+
+# Temporary/scratch files
+*.log
+*.tmp

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ceviche y Sabor — Ceviche Fresco y Catering Premium en Caracas</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Disfruta del mejor ceviche fresco de Caracas. Delivery, pick up y catering de barra móvil, shots de ceviche, paellas y arroces para tus eventos especiales. ¡Haz tu pedido ahora por WhatsApp!">
+  <meta name="keywords" content="ceviche caracas, barra movil caracas, catering caracas, delivery ceviche caracas, paellas caracas, ceviche y sabor, comida caribeña caracas">
+  <meta name="author" content="Ceviche y Sabor">
+  <meta name="theme-color" content="#0E0E0E">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cevicheysabor.com/">
+  <meta property="og:title" content="Ceviche y Sabor — El sabor del mar en tu mesa">
+  <meta property="og:description" content="El ceviche más fresco de Caracas directo a tu puerta o en tu evento. Descubre nuestro menú de ceviches tradicionales, barcos, paellas y nuestra barra móvil.">
+  <meta property="og:image" content="LOGO.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Ceviche y Sabor — Ceviche Fresco en Caracas">
+  <meta property="twitter:description" content="El ceviche más fresco de Caracas. Barra móvil para eventos, delivery y pick up los fines de semana.">
+  <meta property="twitter:image" content="LOGO.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="LOGO.jpg">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Phosphor Icons for premium thin iconography -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</head>
+<body>
+
+  <!-- Floating Toast Notification (Copy fallback) -->
+  <div class="toast-notification" id="toastNotification">
+    Pedido copiado al portapapeles. ¡Pégalo en WhatsApp!
+  </div>
+
+  <!-- Floating WhatsApp Escape Hatch -->
+  <a href="https://wa.me/584122102463?text=Hola%20Ceviche%20y%20Sabor!%20Quiero%20hacer%20una%20consulta." 
+     class="floating-whatsapp-btn" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     aria-label="Escríbenos por WhatsApp"
+     id="floatingWhatsapp">
+    <i class="ph ph-whatsapp-logo"></i>
+  </a>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="#hero" class="logo-link">
+        <img src="LOGO.jpg" alt="Logo de Ceviche y Sabor" class="logo-img">
+        <div class="logo-text">
+          <span>Ceviche</span>
+          <span>y Sabor</span>
+        </div>
+      </a>
+      
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#menu-section">El Menú</a></li>
+          <li><a href="#about-section">Nosotros</a></li>
+          <li><a href="#services-section">Servicios</a></li>
+          <li><a href="#contact-section">Contacto</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-actions">
+        <button class="cart-trigger" id="cartTrigger" aria-label="Abrir Carrito">
+          <i class="ph ph-shopping-bag" style="font-size: 1.5rem;"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <a href="#menu-section" class="btn btn-primary nav-cta-desktop" style="min-height: auto; padding: 0.65rem 1.25rem; font-size: 0.9rem;">Pedir Ahora</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menú">
+          <i class="ph ph-list" style="font-size: 1.75rem;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay">
+    <ul class="mobile-links">
+      <li><a href="#menu-section" class="mobile-nav-link">El Menú</a></li>
+      <li><a href="#about-section" class="mobile-nav-link">Nosotros</a></li>
+      <li><a href="#services-section" class="mobile-nav-link">Servicios</a></li>
+      <li><a href="#contact-section" class="mobile-nav-link">Contacto</a></li>
+      <li style="margin-top: 1.5rem;">
+        <a href="https://wa.me/584122102463" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;">Pedir por WhatsApp</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Section 1: Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Ceviche Fresco.
+          <span>Sabor Real.</span>
+        </h1>
+        <p class="hero-subtext">
+          El sabor del mar en la puerta de tu casa o en tus eventos. Elaborado al momento en Caracas los fines de semana.
+        </p>
+        <div class="hero-actions">
+          <a href="#menu-section" class="btn btn-primary">Ver el Menú</a>
+          <a href="https://wa.me/584122102463?text=Hola!%20Quiero%20hacer%20un%20pedido%20de%20Ceviche%20y%20Sabor." class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+            <i class="ph ph-whatsapp-logo"></i> Pedir por WhatsApp
+          </a>
+        </div>
+      </div>
+      
+      <div class="hero-media-wrapper">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+          <source src="Food showcase video.mp4" type="video/mp4">
+          Tu navegador no soporta reproducción de video.
+        </video>
+        <div class="hero-media-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Kinetic Marquee -->
+  <div class="marquee-container">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        Delivery en Caracas <i class="ph ph-dot marquee-dot"></i>
+        Barra Móvil para Eventos <i class="ph ph-dot marquee-dot"></i>
+        Shots de Ceviche <i class="ph ph-dot marquee-dot"></i>
+        Paellas y Arroces <i class="ph ph-dot marquee-dot"></i>
+        Catering Premium <i class="ph ph-dot marquee-dot"></i>
+        Pedidos por WhatsApp <i class="ph ph-dot marquee-dot"></i>
+        Ceviche Fresco todos los días <i class="ph ph-dot marquee-dot"></i>
+      </div>
+      <div class="marquee-content" aria-hidden="true">
+        Delivery en Caracas <i class="ph ph-dot marquee-dot"></i>
+        Barra Móvil para Eventos <i class="ph ph-dot marquee-dot"></i>
+        Shots de Ceviche <i class="ph ph-dot marquee-dot"></i>
+        Paellas y Arroces <i class="ph ph-dot marquee-dot"></i>
+        Catering Premium <i class="ph ph-dot marquee-dot"></i>
+        Pedidos por WhatsApp <i class="ph ph-dot marquee-dot"></i>
+        Ceviche Fresco todos los días <i class="ph ph-dot marquee-dot"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Bento Grid Showcase / About Preview -->
+  <section class="section-py" id="about-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">De la costa a <span>tu mesa</span></h2>
+        <p class="section-subtitle">Elaboramos cada ceviche con ingredientes seleccionados de altísima calidad y frescura garantizada.</p>
+      </div>
+      
+      <div class="bento-grid">
+        <!-- Large Photo Tile (6col x 2row) -->
+        <div class="bento-item bento-item-large">
+          <img src="food picture.jpg" alt="Presentación de platos de Ceviche y Sabor listos para entrega con tostones crujientes" class="bento-img">
+          <img src="LOGO.jpg" alt="" class="bento-watermark">
+          <div class="bento-label-bottom">Nuestros ceviches frescos listos para delivery y eventos</div>
+        </div>
+        
+        <!-- Video Tile (6col x 1row) -->
+        <div class="bento-item bento-item-video">
+          <video class="bento-video" loop muted playsinline preload="none" id="bentoVideo">
+            <source src="food video.mp4" type="video/mp4">
+          </video>
+          <div class="bento-label-bottom">Preparación artesanal al instante</div>
+        </div>
+        
+        <!-- Stat Gold Tile (2.5col x 1row) -->
+        <div class="bento-item bento-item-stat-gold">
+          <span class="bento-stat-num">2020</span>
+          <span class="bento-stat-label">Llevando frescura</span>
+        </div>
+        
+        <!-- Stat Teal Tile (2.5col x 1row) -->
+        <div class="bento-item bento-item-stat-teal">
+          <span class="bento-stat-num">100%</span>
+          <span class="bento-stat-label">Frescura Marina</span>
+        </div>
+      </div>
+
+      <!-- Bento Caption below grid to flow naturally -->
+      <div class="bento-caption-flow">
+        <p class="bento-caption-text">
+          Pesca del día premium combinada con cítricos perfectos, aguacate fresco, mangos dulces y tostones crujientes hechos en casa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3.5: Barra Móvil Promocional -->
+  <section class="section-py promotion-section" id="bar-promo-section">
+    <div class="container promo-grid-container">
+      <div class="promo-video-wrapper">
+        <video class="promo-video" autoplay loop muted playsinline preload="metadata">
+          <source src="ceviche barra movil video.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="promo-content">
+        <span class="promo-eyebrow">EVENTOS Y CELEBRACIONES</span>
+        <h2 class="promo-title">Lleva la <span class="highlight-gold">barra móvil</span> a tu próximo evento</h2>
+        <p class="promo-desc">
+          Bodas, cumpleaños, corporativos o reuniones familiares: montamos nuestra barra de ceviches con shots, bandejas, paellas y arroz a la marinera para sorprender a tus invitados.
+        </p>
+        <ul class="promo-list">
+          <li>
+            <span class="promo-bullet">&bull;</span>
+            <span class="promo-list-text">Barra móvil de ceviches in situ</span>
+          </li>
+          <li>
+            <span class="promo-bullet">&bull;</span>
+            <span class="promo-list-text">Shots individuales para invitados</span>
+          </li>
+          <li>
+            <span class="promo-bullet">&bull;</span>
+            <span class="promo-list-text">Paellas y arroz a la marinera</span>
+          </li>
+          <li>
+            <span class="promo-bullet">&bull;</span>
+            <span class="promo-list-text">Atención personalizada según tu evento</span>
+          </li>
+        </ul>
+        <div style="margin-top: 2rem;">
+          <button type="button" id="openPromoQuoteBtn" class="btn btn-secondary">
+            <i class="ph ph-sparkle"></i> Cotizar mi evento
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: El Catálogo / Menú Snap Scroll -->
+  <section class="section-py" id="menu-section" style="background-color: #0A0A0A;">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Explora <span>nuestro menú</span></h2>
+        <p class="section-subtitle">Elige tus opciones favoritas. Los precios están expresados en USD ($) base, calculados a la tasa del BCV del día.</p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="menu-tabs" id="menuTabs">
+        <button class="tab-btn active" data-category="todos">Todos</button>
+        <button class="tab-btn" data-category="ceviches">Especial de Ceviches</button>
+        <button class="tab-btn" data-category="bandejas">Bandejas y Barcos</button>
+        <button class="tab-btn" data-category="extras">Raciones y Extras</button>
+        <button class="tab-btn" data-category="bebidas">Bebidas</button>
+      </div>
+
+      <!-- Category Scroll Track -->
+      <div class="catalog-scroll-wrapper">
+        <div class="catalog-track" id="catalogTrack">
+          
+          <!-- Product Card 1: Ceviche Tradicional -->
+          <div class="menu-card" data-category="ceviches" data-id="cev-01">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Ceviche Tradicional" class="menu-card-img">
+              <span class="menu-card-badge">Pescado Blanco</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Ceviche Tradicional / Delantero</h3>
+              <p class="menu-card-desc">Pescado blanco marinado en leche de tigre clásica con cebolla morada y cilantro. Acompañado de tostones y topping de aguacate, mango, piña, fresas y maíz tostado.</p>
+              
+              <div style="margin-bottom: 1.25rem;">
+                <label class="price-label" for="size-cev-01">Porción / Tamaño:</label>
+                <select id="size-cev-01" class="form-input size-select" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;" data-product-id="cev-01">
+                  <option value="1 Pers" data-price="13">1 Persona — $13</option>
+                  <option value="2 Pers" data-price="16">2 Personas — $16</option>
+                  <option value="4 Pers" data-price="26">4 Personas — $26</option>
+                </select>
+              </div>
+              
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val" id="price-cev-01">$13</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-cev-01">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="cev-01" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 2: Ceviche Pasión -->
+          <div class="menu-card" data-category="ceviches" data-id="cev-02">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Ceviche Pasión" class="menu-card-img">
+              <span class="menu-card-badge">Pescado y Camarones</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Ceviche Pasión / Primer Tiempo</h3>
+              <p class="menu-card-desc">Pesca blanca y camarones frescos marinados en leche de tigre cítrica con toques de fruta. Acompañado de tostones y topping completo.</p>
+              
+              <div style="margin-bottom: 1.25rem;">
+                <label class="price-label" for="size-cev-02">Porción / Tamaño:</label>
+                <select id="size-cev-02" class="form-input size-select" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;" data-product-id="cev-02">
+                  <option value="1 Pers" data-price="14">1 Persona — $14</option>
+                  <option value="2 Pers" data-price="18">2 Personas — $18</option>
+                  <option value="4 Pers" data-price="31">4 Personas — $31</option>
+                </select>
+              </div>
+              
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val" id="price-cev-02">$14</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-cev-02">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="cev-02" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 3: Ceviche Trilogía -->
+          <div class="menu-card" data-category="ceviches" data-id="cev-03">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Ceviche Trilogía" class="menu-card-img">
+              <span class="menu-card-badge">Pesca, Camarón y Pulpo</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Ceviche Trilogía / Segundo Tiempo</h3>
+              <p class="menu-card-desc">Combinación del mar con pescado blanco, camarones y pulpo tierno marinados al momento. Servido con tostones crujientes y toppings selectos.</p>
+              
+              <div style="margin-bottom: 1.25rem;">
+                <label class="price-label" for="size-cev-03">Porción / Tamaño:</label>
+                <select id="size-cev-03" class="form-input size-select" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;" data-product-id="cev-03">
+                  <option value="1 Pers" data-price="18">1 Persona — $18</option>
+                  <option value="2 Pers" data-price="21">2 Personas — $21</option>
+                  <option value="4 Pers" data-price="36">4 Personas — $36</option>
+                </select>
+              </div>
+              
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val" id="price-cev-03">$18</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-cev-03">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="cev-03" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 4: Ceviche Delirio -->
+          <div class="menu-card" data-category="ceviches" data-id="cev-04">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Ceviche Delirio" class="menu-card-img">
+              <span class="menu-card-badge">Pesca, Camarón y Cangrejo</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Ceviche Delirio / Medio Tiempo</h3>
+              <p class="menu-card-desc">Pescado blanco fresco, camarones y exquisito cangrejo marinado en una leche de tigre llena de sabor. Acompañado de tostones y topping completo.</p>
+              
+              <div style="margin-bottom: 1.25rem;">
+                <label class="price-label" for="size-cev-04">Porción / Tamaño:</label>
+                <select id="size-cev-04" class="form-input size-select" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;" data-product-id="cev-04">
+                  <option value="1 Pers" data-price="18">1 Persona — $18</option>
+                  <option value="2 Pers" data-price="21">2 Personas — $21</option>
+                  <option value="4 Pers" data-price="35">4 Personas — $35</option>
+                </select>
+              </div>
+              
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val" id="price-cev-04">$18</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-cev-04">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="cev-04" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 5: Ceviche Dinamita -->
+          <div class="menu-card" data-category="ceviches" data-id="cev-05">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Ceviche Dinamita" class="menu-card-img">
+              <span class="menu-card-badge">Pesca, Camarón y Calamar</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Ceviche Dinamita / Tiempo Xtra</h3>
+              <p class="menu-card-desc">Ceviche explosivo con pescado blanco, camarones y calamares frescos en leche de tigre de la casa. Servido con sus respectivas raciones de tostones y toppings.</p>
+              
+              <div style="margin-bottom: 1.25rem;">
+                <label class="price-label" for="size-cev-05">Porción / Tamaño:</label>
+                <select id="size-cev-05" class="form-input size-select" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;" data-product-id="cev-05">
+                  <option value="1 Pers" data-price="18">1 Persona — $18</option>
+                  <option value="2 Pers" data-price="21">2 Personas — $21</option>
+                  <option value="4 Pers" data-price="36">4 Personas — $36</option>
+                </select>
+              </div>
+              
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val" id="price-cev-05">$18</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-cev-05">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="cev-05" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 6: Ceviche Explosión -->
+          <div class="menu-card" data-category="ceviches" data-id="cev-06">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Ceviche Explosión" class="menu-card-img">
+              <span class="menu-card-badge">El Campeón de la Casa</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Ceviche Explosión / Campeón</h3>
+              <p class="menu-card-desc">Nuestra obra maestra marina: pescado blanco, camarones, calamares y pulpo tierno, marinados a la perfección. Acompañado de tostones y topping completo.</p>
+              
+              <div style="margin-bottom: 1.25rem;">
+                <label class="price-label" for="size-cev-06">Porción / Tamaño:</label>
+                <select id="size-cev-06" class="form-input size-select" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;" data-product-id="cev-06">
+                  <option value="1 Pers" data-price="20">1 Persona — $20</option>
+                  <option value="2 Pers" data-price="26">2 Personas — $26</option>
+                  <option value="4 Pers" data-price="39">4 Personas — $39</option>
+                </select>
+              </div>
+              
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val" id="price-cev-06">$20</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-cev-06">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="cev-06" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 7: Bandeja Exótica -->
+          <div class="menu-card" data-category="bandejas" data-id="ban-01">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Bandeja Exótica" class="menu-card-img">
+              <span class="menu-card-badge">Combo 3 Variedades</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Bandeja Exótica</h3>
+              <p class="menu-card-desc">Combinación espectacular para compartir: Ceviche Pasión, Ceviche Tradicional y Ceviche Delirio. Incluye abundantes raciones de tostones y toppings variados.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$35</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-ban-01">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="ban-01" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 8: Bandeja Erótica -->
+          <div class="menu-card" data-category="bandejas" data-id="ban-02">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Bandeja Erótica" class="menu-card-img">
+              <span class="menu-card-badge">Combo 3 Sabores</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Bandeja Erótica</h3>
+              <p class="menu-card-desc">Una experiencia marina completa con: Ceviche Pasión, Ceviche Tradicional y Ceviche Trilogía. Acompañado de raciones de tostones crujientes y toppings completos.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$35</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-ban-02">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="ban-02" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 9: Bandeja Amor -->
+          <div class="menu-card" data-category="bandejas" data-id="ban-03">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Bandeja Amor" class="menu-card-img">
+              <span class="menu-card-badge">Fórmula Exclusiva</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Bandeja Amor</h3>
+              <p class="menu-card-desc">Nuestra bandeja de goles más completa con: Ceviche Delirio, Ceviche Trilogía y Ceviche Dinamita. Incluye raciones extra de tostones y toppings premium.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$42</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-ban-03">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="ban-03" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 10: Barco Afrodita -->
+          <div class="menu-card" data-category="bandejas" data-id="bar-01">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Barco Afrodita" class="menu-card-img">
+              <span class="menu-card-badge">Fines de Semana</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Barco Afrodita (3 Personas)</h3>
+              <p class="menu-card-desc">Disponible sábado y domingo. Exquisito combo de pescado blanco, camarones y pulpo tierno, coronado con crujientes calamares rebosados. Acompañado de toppings y dos raciones de tostones.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$35</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-bar-01">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="bar-01" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 11: Barco Atenea -->
+          <div class="menu-card" data-category="bandejas" data-id="bar-02">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Barco Atenea" class="menu-card-img">
+              <span class="menu-card-badge">Fines de Semana</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Barco Atenea (3 Personas)</h3>
+              <p class="menu-card-desc">Disponible sábado y domingo. Combinación de pescado blanco y camarones con una ración de calamares rebosados crujientes, toppings y dos generosas raciones de tostones.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$32</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-bar-02">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="bar-02" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 12: Calamares Rebosados -->
+          <div class="menu-card" data-category="extras" data-id="ext-01">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Calamares Rebosados" class="menu-card-img">
+              <span class="menu-card-badge">Ración Extra</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Calamares Rebosados (150g)</h3>
+              <p class="menu-card-desc">Porción extra de calamares frescos tiernos, ligeramente rebosados y fritos al momento hasta quedar perfectamente crujientes. Acompañados con salsa tártara de la casa.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$6</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-ext-01">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="ext-01" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 13: Camarones Rebosados -->
+          <div class="menu-card" data-category="extras" data-id="ext-02">
+            <div class="menu-card-img-wrapper">
+              <img src="food picture.jpg" alt="Camarones Rebosados" class="menu-card-img">
+              <span class="menu-card-badge">Ración Extra</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Camarones Rebosados (150g)</h3>
+              <p class="menu-card-desc">Camarones grandes seleccionados, rebosados en nuestra mezcla tempura de la casa y fritos al momento. Súper crujientes por fuera y jugosos por dentro.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$6</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-ext-02">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="ext-02" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 14: Coca Cola 1L -->
+          <div class="menu-card" data-category="bebidas" data-id="beb-01">
+            <div class="menu-card-img-wrapper">
+              <img src="LOGO.jpg" alt="Refrescos" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <span class="menu-card-badge">Bebidas</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Coca-Cola (1 Litro)</h3>
+              <p class="menu-card-desc">Bebida gaseosa familiar, bien fría para acompañar tus ceviches los fines de semana.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$2</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-beb-01">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="beb-01" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 15: Coca Cola 355ml -->
+          <div class="menu-card" data-category="bebidas" data-id="beb-02">
+            <div class="menu-card-img-wrapper">
+              <img src="LOGO.jpg" alt="Refrescos" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <span class="menu-card-badge">Bebidas</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Coca-Cola (Lata 355ml)</h3>
+              <p class="menu-card-desc">Bebida gaseosa individual en lata, perfecta para una porción personal.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$1</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-beb-02">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="beb-02" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 16: Cerveza Nacional -->
+          <div class="menu-card" data-category="bebidas" data-id="beb-03">
+            <div class="menu-card-img-wrapper">
+              <img src="LOGO.jpg" alt="Cervezas" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <span class="menu-card-badge">Cervezas</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Cerveza Nacional</h3>
+              <p class="menu-card-desc">Cerveza venezolana bien fría, el maridaje tradicional por excelencia de un buen ceviche playero.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$1.50</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-beb-03">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="beb-03" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 17: Cerveza Internacional -->
+          <div class="menu-card" data-category="bebidas" data-id="beb-04">
+            <div class="menu-card-img-wrapper">
+              <img src="LOGO.jpg" alt="Cervezas" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <span class="menu-card-badge">Cervezas</span>
+            </div>
+            <div class="menu-card-content">
+              <h3 class="menu-card-title">Cerveza Internacional</h3>
+              <p class="menu-card-desc">Cerveza importada helada, ideal para refrescar tu paladar los sábados y domingos.</p>
+              <div class="menu-card-footer">
+                <div class="menu-card-price">
+                  <span class="price-label">Precio</span>
+                  <span class="price-val">$2</span>
+                </div>
+                <div class="quantity-controls-wrapper" id="controls-beb-04">
+                  <button class="btn-add-to-cart add-to-cart-btn" data-id="beb-04" aria-label="Agregar al carrito">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Servicios (GSAP Sticky-Stack) -->
+  <section class="services-section section-py" id="services-section">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 1rem;">
+        <h2 class="section-title">Nuestros <span>Servicios</span></h2>
+        <p class="section-subtitle">Llevamos el sabor y la frescura marina a donde sea que te encuentres.</p>
+      </div>
+    </div>
+    
+    <div class="sticky-stack-container" id="stickyStackContainer">
+      <!-- Service Card 1: Delivery -->
+      <div class="stack-card" id="card-service-1">
+        <div class="container">
+          <div class="service-card-inner service-card-1">
+            <div class="service-info">
+              <span class="service-info-eyebrow">Días Sábado y Domingo</span>
+              <h3 class="service-info-title" style="color: var(--gold-vivid);">Delivery y Pick Up</h3>
+              <p class="service-info-desc">Disfruta de nuestros ceviches frescos y combos de barcos desde la comodidad de tu hogar. Despachamos el fin de semana a toda Caracas, cuidando minuciosamente la cadena de frío de tu comida.</p>
+              <a href="#menu-section" class="btn btn-primary">Hacer Pedido</a>
+            </div>
+            <div class="service-media">
+              <img src="food picture.jpg" alt="Delivery de ceviche fresco a domicilio">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 2: Barra Móvil -->
+      <div class="stack-card" id="card-service-2">
+        <div class="container">
+          <div class="service-card-inner service-card-2">
+            <div class="service-info">
+              <span class="service-info-eyebrow">Para Bodas, Corporativos y Fiestas</span>
+              <h3 class="service-info-title" style="color: var(--teal-vivid);">Barra móvil</h3>
+              <p class="service-info-desc">Llevamos nuestra barra de ceviches en vivo a tu celebración en Caracas. Preparamos ceviches al momento frente a tus invitados, garantizando un show culinario inolvidable, interactivo y delicioso.</p>
+              <button type="button" id="openBarQuoteBtn" class="btn btn-secondary">Cotizar Barra</button>
+            </div>
+            <div class="service-media">
+              <video class="service-video-element" loop muted playsinline preload="none" id="servicesVideo">
+                <source src="ceviche barra movil video.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 3: Catering Completo -->
+      <div class="stack-card" id="card-service-3">
+        <div class="container">
+          <div class="service-card-inner service-card-3">
+            <div class="service-info">
+              <span class="service-info-eyebrow">Catering Premium</span>
+              <h3 class="service-info-title">Catering Completo</h3>
+              <p class="service-info-desc">Mucho más que ceviche: preparamos exquisitas paellas de mariscos en vivo, shots de ceviches para fiestas, y arroz a la marinera. Nos encargamos de toda la comida marina para tus eventos.</p>
+              <button type="button" id="openCateringQuoteBtn" class="btn">Solicitar Cotización</button>
+            </div>
+            <div class="service-media" style="border-color: rgba(0,0,0,0.15);">
+              <img src="comidas2.webp" alt="Servicio de paellas y catering marino de Ceviche y Sabor" style="filter: brightness(0.9);">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Social Proof (Video Testimonial) -->
+  <section class="section-py" style="background-color: #0A0A0A;">
+    <div class="container proof-grid">
+      <!-- Left column: Influencer video click to play -->
+      <div class="influencer-video-wrapper">
+        <video class="influencer-video" loop playsinline preload="none" id="influencerVideo">
+          <source src="influecers trying food.mp4" type="video/mp4">
+          Tu navegador no soporta video.
+        </video>
+        <!-- Poster custom overlay to avoid 29MB load on mobile data -->
+        <div class="video-poster-overlay" id="videoPoster" style="background-image: linear-gradient(rgba(14,14,14,0.2), rgba(14,14,14,0.7)), url('food picture.jpg');">
+          <div class="play-btn-glow">
+            <i class="ph ph-play"></i>
+          </div>
+          
+          <div class="video-testimonial-caption">
+            <div class="testimonial-badge-row">
+              <span class="testimonial-tag"><i class="ph-fill ph-instagram-logo"></i> @probaderaa</span>
+              <span class="testimonial-price">Barco: $30</span>
+            </div>
+            <p class="testimonial-context">PROBANDO el barco de ceviche de Afrodita &mdash; @cevicheysabor #PROBADERA</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right column: Reviews -->
+      <div class="reviews-wrapper">
+        <div class="section-header" style="margin-bottom: 1.5rem;">
+          <h2 class="section-title">Lo que dicen <span>nuestros clientes</span></h2>
+        </div>
+        
+        <div class="review-item">
+          <div class="star-rating">
+            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+          </div>
+          <p class="review-text">"El mejor ceviche de Caracas. La frescura y el sabor son incomparables, y el servicio de barra en mi cumpleaños fue el éxito total. ¡100% recomendados!"</p>
+          <span class="review-author">Carlos M. - Cumpleaños Familiar</span>
+        </div>
+
+        <div class="review-item">
+          <div class="star-rating">
+            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+          </div>
+          <p class="review-text">"Los shots de ceviche y la paella en nuestra boda civil estuvieron espectaculares. Todos los invitados quedaron fascinados. Muy profesionales."</p>
+          <span class="review-author">Valentina G. - Fiesta de Quince Años</span>
+        </div>
+
+        <div class="review-item">
+          <div class="star-rating">
+            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+          </div>
+          <p class="review-text">"Hacer el pedido por WhatsApp es súper rápido y llega fresquísimo, como si te lo estuvieras comiendo en la playa. Los tostones son una delicia."</p>
+          <span class="review-author">Alejandro R. - Entrega a Domicilio</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Cómo Ordenar (Stagger Diagonal Steps) -->
+  <section class="section-py">
+    <div class="container">
+      <div class="section-header" style="text-align: center; margin-left: auto; margin-right: auto;">
+        <h2 class="section-title">¿Cómo <span>ordenar?</span></h2>
+        <p class="section-subtitle">Sigue estos tres sencillos pasos para tener tu ceviche fresco hoy.</p>
+      </div>
+      
+      <div class="steps-container">
+        <!-- SVG diagonal lines connectors -->
+        <svg class="step-connectors" viewBox="0 0 1200 400" preserveAspectRatio="none">
+          <path class="connector-path" d="M 250,150 C 400,150 500,200 600,200" id="connector-1"></path>
+          <path class="connector-path" d="M 750,220 C 850,220 950,280 1000,300" id="connector-2"></path>
+        </svg>
+
+        <div class="step-row">
+          <!-- Step 1 -->
+          <div class="step-card step-card-1">
+            <div class="step-word">Elige</div>
+            <p class="step-desc">Explora nuestro catálogo y selecciona tus ceviches, bandejas o raciones favoritas agregándolos al carrito.</p>
+          </div>
+          
+          <!-- Step 2 -->
+          <div class="step-card step-card-2">
+            <div class="step-word">Escribe</div>
+            <p class="step-desc">Confirma tu pedido. Rellena tus datos y serás redirigido a WhatsApp con un mensaje pre-formateado listo para enviar.</p>
+          </div>
+          
+          <!-- Step 3 -->
+          <div class="step-card step-card-3">
+            <div class="step-word">Disfruta</div>
+            <p class="step-desc">Coordinamos la entrega inmediata en Caracas y disfrutas del marisco más fresco y sabroso en tu mesa.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Section 9: Contact & Map Section -->
+  <section class="section-py" id="contact-section" style="background-color: #0A0A0A;">
+    <div class="container contact-grid">
+      <div class="contact-info-panel">
+        <div>
+          <div class="section-header" style="margin-bottom: 2rem;">
+            <h2 class="section-title">Contáctanos</h2>
+            <p class="section-subtitle">¿Tienes dudas o quieres cotizar un evento? Escríbenos directamente.</p>
+          </div>
+          
+          <div class="info-group">
+            <div class="info-label">WhatsApp de Pedidos</div>
+            <a href="https://wa.me/584122102463" class="info-val" target="_blank" rel="noopener noreferrer">0412-2102463</a>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Correo de Catering</div>
+            <a href="mailto:cevicheysabor2020@gmail.com" class="info-val">cevicheysabor2020@gmail.com</a>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Horarios de Entrega</div>
+            <p class="info-val" style="font-size: 1.1rem; color: var(--text-secondary); font-weight: 400;">
+              Sábados y Domingos<br>11:30 AM – 5:00 PM
+            </p>
+          </div>
+        </div>
+        
+        <div>
+          <div class="info-label" style="margin-bottom: 1rem;">Nuestras Redes</div>
+          <ul class="social-links">
+            <li>
+              <a href="https://instagram.com/cevicheysabor" class="social-icon-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <i class="ph ph-instagram-logo"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/584122102463" class="social-icon-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <i class="ph ph-whatsapp-logo"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="map-wrapper">
+        <iframe 
+          class="map-iframe"
+          src="https://maps.google.com/maps?q=Caracas,%20Venezuela&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+          allowfullscreen="" 
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="container footer-top">
+      <div class="footer-brand">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="LOGO.jpg" alt="Logo de Ceviche y Sabor" class="footer-logo">
+          <div class="footer-brand-title">
+            Ceviche<span>y Sabor</span>
+          </div>
+        </div>
+        <p class="footer-brand-desc">El sabor del mar en la puerta de tu casa o en tu fiesta. Elaborado al momento en Caracas, Venezuela.</p>
+      </div>
+      
+      <div class="footer-nav">
+        <div class="footer-nav-title">Navegación</div>
+        <ul class="footer-nav-links">
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#menu-section">El Menú</a></li>
+          <li><a href="#about-section">Nosotros</a></li>
+          <li><a href="#services-section">Servicios</a></li>
+          <li><a href="#contact-section">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <div class="footer-contact-title">Contacto</div>
+        <ul class="footer-contact-details">
+          <li>WhatsApp: <a href="https://wa.me/584122102463">0412-2102463</a></li>
+          <li>Email: <a href="mailto:cevicheysabor2020@gmail.com">cevicheysabor2020@gmail.com</a></li>
+          <li>Ubicación: Caracas, Venezuela</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <div class="copyright">
+        © 2026 Ceviche y Sabor. Todos los derechos reservados.
+      </div>
+      <div class="credits">
+        Diseñado con <i class="ph ph-heart-break" style="color: var(--gold-vivid); vertical-align: middle;"></i> para Caracas.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Slide Drawer / Mobile Bottom Sheet -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  
+  <aside class="cart-panel" id="cartPanel">
+    <div class="bottom-sheet-handle"></div>
+    <div class="cart-header">
+      <h2 class="cart-title">Tu Pedido</h2>
+      <button class="cart-close-btn" id="cartCloseBtn" aria-label="Cerrar Carrito">
+        <i class="ph ph-x"></i>
+      </button>
+    </div>
+    
+    <div class="cart-body">
+      <!-- Empty Cart View -->
+      <div class="empty-cart-view" id="emptyCartView">
+        <i class="ph ph-shopping-cart-simple empty-cart-icon"></i>
+        <h3 class="empty-cart-title">Tu carrito está vacío</h3>
+        <p class="empty-cart-text">Navega por nuestro menú y añade tus ceviches o combos favoritos.</p>
+        <a href="#menu-section" class="btn btn-secondary" id="cartBrowseBtn" style="margin-top: 1rem;">Ver Catálogo</a>
+      </div>
+      
+      <!-- Cart Items List -->
+      <div class="cart-items-list" id="cartItemsList" style="display: none;">
+        <!-- Dynamic content injected by app.js -->
+      </div>
+      
+      <!-- Checkout Form -->
+      <form class="cart-checkout-form" id="checkoutForm" style="display: none;" onsubmit="event.preventDefault();">
+        <h3 class="form-title">Tus Datos</h3>
+        
+        <div class="form-group">
+          <label class="form-label" for="clientName">Nombre Completo *</label>
+          <input type="text" id="clientName" class="form-input" required placeholder="Ej. Juan Pérez">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Tipo de Pedido *</label>
+          <div class="delivery-toggle">
+            <button type="button" class="toggle-pill-btn active" id="deliveryBtn">Delivery</button>
+            <button type="button" class="toggle-pill-btn" id="pickupBtn">Pick Up</button>
+          </div>
+        </div>
+        
+        <div class="form-group address-conditional active" id="addressGroup">
+          <label class="form-label" for="clientAddress">Dirección de Entrega en Caracas *</label>
+          <textarea id="clientAddress" class="form-input form-textarea" placeholder="Ej. Av. Francisco de Miranda, Edif. Altamira, Apto 4B. Altamira." required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="clientNote">Instrucciones o Comentarios Especiales</label>
+          <textarea id="clientNote" class="form-input form-textarea" placeholder="Ej. Sin picante, tostones extra, etc."></textarea>
+        </div>
+      </form>
+    </div>
+    
+    <div class="cart-footer" id="cartFooter" style="display: none;">
+      <div class="summary-row">
+        <span class="summary-label">Subtotal:</span>
+        <span class="summary-val" id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Costo de Envío:</span>
+        <span class="summary-val" style="color: var(--teal-vivid);">A Coordinar</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label-total">Total Estimado:</span>
+        <span class="summary-val-total" id="cartTotal">$0.00</span>
+      </div>
+      <button type="submit" form="checkoutForm" class="btn btn-whatsapp" id="btnCheckout">
+        <i class="ph ph-whatsapp-logo" style="font-size: 1.25rem;"></i> Enviar Pedido a WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <!-- Event Quote Modal -->
+  <div class="quote-modal-overlay" id="quoteModalOverlay"></div>
+  <dialog class="quote-modal" id="quoteModal">
+    <div class="quote-modal-header">
+      <h2 class="quote-modal-title" id="quoteModalTitleHeader"><i class="ph ph-calendar" id="quoteModalIcon" style="color: var(--gold-vivid);"></i> <span id="quoteModalTitleText">Cotizar Evento</span></h2>
+      <button class="quote-modal-close-btn" id="quoteModalCloseBtn" aria-label="Cerrar Cotización">
+        <i class="ph ph-x"></i>
+      </button>
+    </div>
+    <div class="quote-modal-body">
+      <form class="quote-modal-form" id="quoteForm" onsubmit="event.preventDefault();">
+        <div class="form-group">
+          <label class="form-label" for="quoteName">Nombre Completo *</label>
+          <input type="text" id="quoteName" class="form-input" required placeholder="Ej. Ana Rodríguez">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="quotePhone">Teléfono de Contacto (WhatsApp) *</label>
+          <input type="tel" id="quotePhone" class="form-input" required placeholder="Ej. 0412-1234567">
+        </div>
+        
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="quoteDate">Fecha Estimada *</label>
+            <input type="date" id="quoteDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="quoteGuests">Cantidad de Invitados *</label>
+            <input type="number" id="quoteGuests" class="form-input" required min="10" placeholder="Mínimo 10 personas">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="quoteServiceType">Servicios a Incluir *</label>
+          <select id="quoteServiceType" class="form-input" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="Barra Móvil Completa">Barra Móvil Completa (Ceviches en vivo)</option>
+            <option value="Servicio de Shots de Ceviche">Servicio de Shots de Ceviche</option>
+            <option value="Bandejas y Catering Frío">Bandejas y Catering Frío</option>
+            <option value="Paellas y Arroces a Domicilio">Paellas y Arroces a Domicilio</option>
+            <option value="Servicio Mixto Personalizado">Servicio Mixto Personalizado</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="quoteComments">Detalles o requerimientos especiales</label>
+          <textarea id="quoteComments" class="form-input form-textarea" placeholder="Ej. Alergias, preferencias, si requiere mesoneros, etc."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-whatsapp" id="btnSubmitQuote" style="width: 100%; margin-top: 1rem;">
+          <i class="ph ph-whatsapp-logo" style="font-size: 1.25rem;"></i> Solicitar Cotización por WhatsApp
+        </button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Scripts -->
+  <!-- GSAP for core scroll stacking animations (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
