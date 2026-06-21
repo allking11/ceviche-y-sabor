@@ -72,6 +72,86 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMenuCardControls(productId);
   }
 
+  // ==========================================
+  // FLY-TO-CART ANIMATION
+  // ==========================================
+  function flyToCart(originElement) {
+    const cartTrigger = document.getElementById('cartTrigger');
+    const cartBadge   = document.getElementById('cartBadge');
+    if (!cartTrigger || !originElement) return;
+
+    // Source position (center of origin button)
+    const srcRect  = originElement.getBoundingClientRect();
+    const destRect = cartTrigger.getBoundingClientRect();
+
+    const startX = srcRect.left + srcRect.width / 2;
+    const startY = srcRect.top  + srcRect.height / 2;
+    const endX   = destRect.left + destRect.width / 2;
+    const endY   = destRect.top  + destRect.height / 2;
+
+    // Create the flying particle
+    const particle = document.createElement('div');
+    particle.className = 'fly-to-cart-particle';
+    particle.textContent = '+';
+    particle.style.left = `${startX - 9}px`;  // 9 = half of 18px width
+    particle.style.top  = `${startY - 9}px`;
+    document.body.appendChild(particle);
+
+    // Animate via Web Animations API for smooth GPU-composited motion
+    const dx = endX - startX;
+    const dy = endY - startY;
+
+    // Calculate arc control point (curve upward slightly before arriving)
+    const arcX = startX + dx * 0.5;
+    const arcY = Math.min(startY, endY) - Math.abs(dy) * 0.35;
+
+    const frames = 20;
+    const keyframes = [];
+    for (let i = 0; i <= frames; i++) {
+      const t = i / frames;
+      // Cubic bezier quadratic interpolation
+      const bx = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * arcX + t * t * endX;
+      const by = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * arcY + t * t * endY;
+      const scale = t < 0.8 ? 1 - t * 0.3 : 0.7 - (t - 0.8) * 3.5;
+      const opacity = t > 0.85 ? 1 - (t - 0.85) * 6.5 : 1;
+
+      keyframes.push({
+        left: `${bx - 9}px`,
+        top:  `${by - 9}px`,
+        transform: `scale(${Math.max(0, scale)})`,
+        opacity: `${Math.max(0, opacity)}`,
+      });
+    }
+
+    const anim = particle.animate(keyframes, {
+      duration: 520,
+      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      fill: 'forwards',
+    });
+
+    anim.onfinish = () => {
+      // Remove particle from DOM
+      particle.remove();
+
+      // Bounce the badge
+      cartBadge.classList.remove('bounce');
+      // Force reflow so the animation resets cleanly
+      void cartBadge.offsetWidth;
+      cartBadge.classList.add('bounce');
+      cartBadge.addEventListener('animationend', () => {
+        cartBadge.classList.remove('bounce');
+      }, { once: true });
+
+      // Jiggle the cart icon
+      cartTrigger.classList.remove('jiggle');
+      void cartTrigger.offsetWidth;
+      cartTrigger.classList.add('jiggle');
+      cartTrigger.addEventListener('animationend', () => {
+        cartTrigger.classList.remove('jiggle');
+      }, { once: true });
+    };
+  }
+
   function updateItemQty(cartKey, change) {
     const index = cart.findIndex(item => item.cartKey === cartKey);
     if (index > -1) {
@@ -197,7 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Add click events for menu card controls
       controlsContainer.querySelector('.card-qty-minus').addEventListener('click', () => updateItemQty(currentCartKey, -1));
-      controlsContainer.querySelector('.card-qty-plus').addEventListener('click', () => updateItemQty(currentCartKey, 1));
+      controlsContainer.querySelector('.card-qty-plus').addEventListener('click', (e) => {
+        flyToCart(e.currentTarget);
+        updateItemQty(currentCartKey, 1);
+      });
     }
   }
 
@@ -216,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
       price = parseFloat(selectedOption.dataset.price);
     }
 
+    flyToCart(btn);
     addToCart(productId, size, price);
   }
 
