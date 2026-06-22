@@ -34,13 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Recalculate badge count
     const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
     const cartBadge = document.getElementById('cartBadge');
+    const cartTrigger = document.getElementById('cartTrigger');
     
     if (totalItems > 0) {
       cartBadge.textContent = totalItems;
       cartBadge.classList.add('has-items');
+      if (cartTrigger) {
+        cartTrigger.setAttribute('aria-label', `Abrir Carrito, ${totalItems} artículos agregados`);
+      }
     } else {
       cartBadge.classList.remove('has-items');
       cartBadge.textContent = '0';
+      if (cartTrigger) {
+        cartTrigger.setAttribute('aria-label', 'Abrir Carrito, vacío');
+      }
     }
 
     // Render cart items inside side panel / bottom sheet
@@ -71,6 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateCartState();
     updateMenuCardControls(productId);
+
+    // Speak cart update
+    const announcer = document.getElementById('cartLiveAnnouncer');
+    if (announcer) {
+      announcer.textContent = `${variantName} agregado al carrito.`;
+    }
   }
 
   // ==========================================
@@ -192,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCart() {
     const emptyView = document.getElementById('emptyCartView');
     const itemsList = document.getElementById('cartItemsList');
-    const checkoutForm = document.getElementById('checkoutForm');
     const cartFooter = document.getElementById('cartFooter');
     const btnClearCart = document.getElementById('btnClearCart');
     
@@ -230,11 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="cart-item-controls">
           <span class="cart-item-price">$${itemSubtotal.toFixed(2)}</span>
           <div class="quantity-controls">
-            <button type="button" class="qty-btn btn-qty-minus" data-key="${item.cartKey}">
+            <button type="button" class="qty-btn btn-qty-minus" data-key="${item.cartKey}" aria-label="Disminuir cantidad de ${item.name}">
               <i class="ph ph-minus" style="font-size: 0.8rem;"></i>
             </button>
             <span class="qty-val">${item.qty}</span>
-            <button type="button" class="qty-btn btn-qty-plus" data-key="${item.cartKey}">
+            <button type="button" class="qty-btn btn-qty-plus" data-key="${item.cartKey}" aria-label="Aumentar cantidad de ${item.name}">
               <i class="ph ph-plus" style="font-size: 0.8rem;"></i>
             </button>
           </div>
@@ -246,14 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update prices
     document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
     document.getElementById('cartTotal').textContent = `$${subtotal.toFixed(2)}`;
-
-    // Add event listeners to the new +/- buttons
-    itemsList.querySelectorAll('.btn-qty-minus').forEach(btn => {
-      btn.addEventListener('click', () => updateItemQty(btn.dataset.key, -1));
-    });
-    itemsList.querySelectorAll('.btn-qty-plus').forEach(btn => {
-      btn.addEventListener('click', () => updateItemQty(btn.dataset.key, 1));
-    });
   }
 
   function updateMenuCardControls(productId) {
@@ -274,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!item) {
       controlsContainer.innerHTML = `
-        <button class="btn-add-to-cart add-to-cart-btn" data-id="${productId}" aria-label="Agregar al carrito">
+        <button class="btn-add-to-cart add-to-cart-btn" data-id="${productId}" aria-label="Agregar ${productInfo.name} al carrito">
           <i class="ph ph-plus"></i>
         </button>
       `;
@@ -283,11 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       controlsContainer.innerHTML = `
         <div class="quantity-controls">
-          <button class="qty-btn card-qty-minus" data-key="${currentCartKey}">
+          <button class="qty-btn card-qty-minus" data-key="${currentCartKey}" aria-label="Disminuir cantidad de ${productInfo.name}">
             <i class="ph ph-minus" style="font-size: 0.8rem;"></i>
           </button>
           <span class="qty-val">${item.qty}</span>
-          <button class="qty-btn card-qty-plus" data-key="${currentCartKey}">
+          <button class="qty-btn card-qty-plus" data-key="${currentCartKey}" aria-label="Aumentar cantidad de ${productInfo.name}">
             <i class="ph ph-plus" style="font-size: 0.8rem;"></i>
           </button>
         </div>
@@ -351,6 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pickupBtn = document.getElementById('pickupBtn');
   const addressGroup = document.getElementById('addressGroup');
   const clientAddress = document.getElementById('clientAddress');
+  const checkoutForm = document.getElementById('checkoutForm');
 
   deliveryBtn.addEventListener('click', () => {
     orderType = 'delivery';
@@ -375,23 +380,77 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartPanel = document.getElementById('cartPanel');
   const cartBrowseBtn = document.getElementById('cartBrowseBtn');
 
+  let activeElementBeforeCart = null;
+
   function openCart() {
+    activeElementBeforeCart = document.activeElement;
+    cartPanel.removeAttribute('inert');
     cartOverlay.classList.add('open');
     cartPanel.classList.add('open');
     document.body.style.overflow = 'hidden';
     if (lenisInstance) lenisInstance.stop();
+    
+    setTimeout(() => {
+      if (cartCloseBtn) cartCloseBtn.focus();
+      cartPanel.addEventListener('keydown', trapCartFocus);
+    }, 100);
   }
 
   function closeCart() {
+    cartPanel.removeEventListener('keydown', trapCartFocus);
     cartOverlay.classList.remove('open');
     cartPanel.classList.remove('open');
+    cartPanel.setAttribute('inert', '');
     document.body.style.overflow = 'auto';
     if (lenisInstance) lenisInstance.start();
+    
+    if (activeElementBeforeCart) {
+      activeElementBeforeCart.focus();
+    }
+  }
+
+  function trapCartFocus(e) {
+    if (e.key !== 'Tab') return;
+    const focusableEls = cartPanel.querySelectorAll('button, [href], input, select, textarea, [tabindex="0"]');
+    const visibleEls = Array.from(focusableEls).filter(el => {
+      const style = window.getComputedStyle(el);
+      return el.offsetWidth > 0 && el.offsetHeight > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    });
+    
+    if (visibleEls.length === 0) return;
+    const firstFocusableEl = visibleEls[0];
+    const lastFocusableEl = visibleEls[visibleEls.length - 1];
+    
+    if (e.shiftKey) { /* Shift + Tab */
+      if (document.activeElement === firstFocusableEl) {
+        lastFocusableEl.focus();
+        e.preventDefault();
+      }
+    } else { /* Tab */
+      if (document.activeElement === lastFocusableEl) {
+        firstFocusableEl.focus();
+        e.preventDefault();
+      }
+    }
   }
 
   cartTrigger.addEventListener('click', openCart);
   cartCloseBtn.addEventListener('click', closeCart);
   cartOverlay.addEventListener('click', closeCart);
+
+  const cartItemsList = document.getElementById('cartItemsList');
+  if (cartItemsList) {
+    cartItemsList.addEventListener('click', (e) => {
+      const minusBtn = e.target.closest('.btn-qty-minus');
+      const plusBtn = e.target.closest('.btn-qty-plus');
+      
+      if (minusBtn) {
+        updateItemQty(minusBtn.dataset.key, -1);
+      } else if (plusBtn) {
+        updateItemQty(plusBtn.dataset.key, 1);
+      }
+    });
+  }
 
   const btnClearCart = document.getElementById('btnClearCart');
   if (btnClearCart) {
@@ -438,17 +497,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuToggle = document.getElementById('menuToggle');
   const mobileNavOverlay = document.getElementById('mobileNavOverlay');
   const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  let activeElementBeforeMobileNav = null;
 
   menuToggle.addEventListener('click', () => {
     const isOpen = mobileNavOverlay.classList.toggle('open');
     const toggleIcon = menuToggle.querySelector('i');
     
+    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    menuToggle.setAttribute('aria-label', isOpen ? 'Cerrar Menú' : 'Abrir Menú');
+    
     if (isOpen) {
+      activeElementBeforeMobileNav = document.activeElement;
+      mobileNavOverlay.removeAttribute('inert');
       toggleIcon.className = 'ph ph-x';
       document.body.style.overflow = 'hidden';
+      
+      mobileNavOverlay.addEventListener('keydown', trapMobileNavFocus);
+      setTimeout(() => {
+        const firstLink = mobileNavOverlay.querySelector('a');
+        if (firstLink) firstLink.focus();
+      }, 100);
     } else {
       toggleIcon.className = 'ph ph-list';
       document.body.style.overflow = 'auto';
+      mobileNavOverlay.setAttribute('inert', '');
+      
+      mobileNavOverlay.removeEventListener('keydown', trapMobileNavFocus);
+      if (activeElementBeforeMobileNav) {
+        activeElementBeforeMobileNav.focus();
+      }
     }
   });
 
@@ -457,16 +534,46 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileNavOverlay.classList.remove('open');
       menuToggle.querySelector('i').className = 'ph ph-list';
       document.body.style.overflow = 'auto';
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Abrir Menú');
+      mobileNavOverlay.setAttribute('inert', '');
+      mobileNavOverlay.removeEventListener('keydown', trapMobileNavFocus);
     });
   });
 
-  // Sticky Navbar blur on scroll
+  function trapMobileNavFocus(e) {
+    if (e.key !== 'Tab') return;
+    const focusableEls = mobileNavOverlay.querySelectorAll('a, button');
+    if (focusableEls.length === 0) return;
+    const firstFocusableEl = focusableEls[0];
+    const lastFocusableEl = focusableEls[focusableEls.length - 1];
+    
+    if (e.shiftKey) { /* Shift + Tab */
+      if (document.activeElement === firstFocusableEl) {
+        lastFocusableEl.focus();
+        e.preventDefault();
+      }
+    } else { /* Tab */
+      if (document.activeElement === lastFocusableEl) {
+        firstFocusableEl.focus();
+        e.preventDefault();
+      }
+    }
+  }
+
+  // Sticky Navbar blur on scroll (Throttled with state checks)
+  let hasScrolledPastThreshold = false;
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+    const isPastThreshold = window.scrollY > 50;
+    
+    if (isPastThreshold !== hasScrolledPastThreshold) {
+      hasScrolledPastThreshold = isPastThreshold;
+      if (hasScrolledPastThreshold) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     }
   }, { passive: true });
 
@@ -498,43 +605,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Reset scroll position smoothly
       const track = document.getElementById('catalogTrack');
-      gsap.to(track, { scrollLeft: 0, duration: 0.3, ease: 'power2.out' });
+      if (typeof gsap !== 'undefined') {
+        gsap.to(track, { scrollLeft: 0, duration: 0.3, ease: 'power2.out' });
+      } else {
+        track.scrollLeft = 0;
+      }
 
       // Animate out cards to hide
       if (targetCardsToHide.length > 0) {
-        gsap.to(targetCardsToHide, {
-          opacity: 0,
-          scale: 0.9,
-          duration: 0.2,
-          overwrite: 'auto',
-          onComplete: () => {
-            targetCardsToHide.forEach(c => c.style.display = 'none');
-            // Animate in matching cards
-            showCards(targetCardsToShow);
-          }
-        });
+        if (typeof gsap !== 'undefined') {
+          gsap.to(targetCardsToHide, {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.2,
+            overwrite: 'auto',
+            onComplete: () => {
+              targetCardsToHide.forEach(c => c.style.display = 'none');
+              // Animate in matching cards
+              showCards(targetCardsToShow);
+            }
+          });
+        } else {
+          targetCardsToHide.forEach(c => {
+            c.style.display = 'none';
+            c.style.opacity = '0';
+          });
+          showCards(targetCardsToShow);
+        }
       } else {
         showCards(targetCardsToShow);
       }
 
       function showCards(cards) {
-        // Ensure they have flex display but are invisible
-        cards.forEach(c => {
-          c.style.display = 'flex';
-          // Initialize opacity/scale if not already visible
-          if (gsap.getProperty(c, 'opacity') === 1) {
-            gsap.set(c, { opacity: 0, scale: 0.9 });
-          }
-        });
-        
-        gsap.to(cards, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          stagger: 0.03,
-          ease: 'back.out(1.15)',
-          overwrite: 'auto'
-        });
+        if (typeof gsap !== 'undefined') {
+          // Ensure they have flex display but are invisible
+          cards.forEach(c => {
+            c.style.display = 'flex';
+            // Initialize opacity/scale if not already visible
+            if (gsap.getProperty(c, 'opacity') === 1) {
+              gsap.set(c, { opacity: 0, scale: 0.9 });
+            }
+          });
+          
+          gsap.to(cards, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            stagger: 0.03,
+            ease: 'back.out(1.15)',
+            overwrite: 'auto'
+          });
+        } else {
+          cards.forEach(c => {
+            c.style.display = 'flex';
+            c.style.opacity = '1';
+            c.style.transform = 'none';
+          });
+        }
       }
     });
   });
@@ -606,12 +733,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let startX;
     let scrollLeft;
     let walkDist = 0;
+    let trackOffsetLeft = 0;
     
     catalogTrack.addEventListener('mousedown', (e) => {
       isDown = true;
       catalogTrack.classList.add('dragging');
+      trackOffsetLeft = catalogTrack.offsetLeft; // Cache offsetLeft
       // x coordinate relative to the catalogTrack container
-      startX = e.pageX - catalogTrack.offsetLeft;
+      startX = e.pageX - trackOffsetLeft;
       scrollLeft = catalogTrack.scrollLeft;
       walkDist = 0;
     });
@@ -640,7 +769,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isDown) return;
       e.preventDefault();
       
-      const x = e.pageX - catalogTrack.offsetLeft;
+      const x = e.pageX - trackOffsetLeft; // Consume cached offsetLeft to prevent layout thrash
       // Multiplier of 1.5 makes scrolling feel responsive and fast
       const walk = (x - startX) * 1.5;
       walkDist = walk;
@@ -765,18 +894,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================
-  // 7. VIDEO SCROLL TRIGGERS (IntersectionObserver)
+  // 7. VIDEO SCROLL TRIGGERS & LAZY LOADING (IntersectionObserver)
   // ==========================================
-  const bentoVideo = document.getElementById('bentoVideo');
-  const servicesVideo = document.getElementById('servicesVideo');
-  const influencerVideo = document.getElementById('influencerVideo');
-  const videoPoster = document.getElementById('videoPoster');
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
 
-  // Lazy play/pause of videos in viewport to save mobile battery and network
   const videoObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const video = entry.target;
       if (entry.isIntersecting) {
+        const source = video.querySelector('source');
+        
+        // Dynamically inject src if not yet initialized
+        if (video.dataset.src && (!source.src || source.src === window.location.href)) {
+          source.src = video.dataset.src;
+          video.load();
+          video.classList.add('video-initialized');
+        }
+
         // Only autoplay background loop videos, not the influencer video
         if (video !== influencerVideo) {
           video.play().catch(() => {});
@@ -785,18 +919,24 @@ document.addEventListener('DOMContentLoaded', () => {
         video.pause();
       }
     });
-  }, { threshold: 0.3 });
+  }, { rootMargin: '200px', threshold: 0.1 });
 
-  if (bentoVideo) videoObserver.observe(bentoVideo);
-  if (servicesVideo) videoObserver.observe(servicesVideo);
-  if (influencerVideo) videoObserver.observe(influencerVideo);
+  lazyVideos.forEach(v => videoObserver.observe(v));
 
   // Play influencer video on click (voluntary stream only, 29MB file)
   if (videoPoster && influencerVideo) {
     videoPoster.addEventListener('click', () => {
       videoPoster.classList.add('playing');
+      
+      const source = influencerVideo.querySelector('source');
+      if (!source.src || source.src === window.location.href) {
+        source.src = 'influecers trying food.mp4';
+        influencerVideo.load();
+      }
+      
       influencerVideo.setAttribute('controls', 'true');
-      influencerVideo.play().catch(() => {
+      influencerVideo.play().catch((err) => {
+        console.error("Fallo de reproducción del video testimonial:", err);
         alert('Hubo un error cargando el video. Inténtalo de nuevo.');
         videoPoster.classList.remove('playing');
       });
@@ -1143,8 +1283,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const quoteModalIcon = document.getElementById('quoteModalIcon');
   const quoteServiceType = document.getElementById('quoteServiceType');
 
+  let activeElementBeforeQuoteModal = null;
+
   function openQuoteModal(titleText, iconClass, defaultService) {
     if (quoteModal && quoteModalOverlay) {
+      activeElementBeforeQuoteModal = document.activeElement;
       if (quoteModalTitleText && titleText) {
         quoteModalTitleText.textContent = titleText;
       }
@@ -1155,10 +1298,16 @@ document.addEventListener('DOMContentLoaded', () => {
         quoteServiceType.value = defaultService;
       }
       
-      quoteModalOverlay.classList.add('open');
-      quoteModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      if (lenisInstance) lenisInstance.stop();
+      quoteModal.removeAttribute('inert');
+      quoteModal.showModal();
+      
+      setTimeout(() => {
+        quoteModalOverlay.classList.add('open');
+        quoteModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        if (lenisInstance) lenisInstance.stop();
+        if (quoteModalCloseBtn) quoteModalCloseBtn.focus();
+      }, 10);
     }
   }
 
@@ -1166,8 +1315,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (quoteModal && quoteModalOverlay) {
       quoteModalOverlay.classList.remove('open');
       quoteModal.classList.remove('open');
-      document.body.style.overflow = 'auto';
-      if (lenisInstance) lenisInstance.start();
+      
+      setTimeout(() => {
+        quoteModal.close();
+        quoteModal.setAttribute('inert', '');
+        document.body.style.overflow = 'auto';
+        if (lenisInstance) lenisInstance.start();
+        if (activeElementBeforeQuoteModal) {
+          activeElementBeforeQuoteModal.focus();
+        }
+      }, 250); // Match CSS transition duration
     }
   }
 
@@ -1197,12 +1354,13 @@ document.addEventListener('DOMContentLoaded', () => {
     quoteModalOverlay.addEventListener('click', closeQuoteModal);
   }
 
-  // Handle escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && quoteModal && quoteModal.classList.contains('open')) {
-      closeQuoteModal();
-    }
-  });
+  // Handle ESC key native event sequence for dialog cancel
+  if (quoteModal) {
+    quoteModal.addEventListener('cancel', (e) => {
+      e.preventDefault(); // Stop native immediate close
+      closeQuoteModal();  // Trigger structured transition close
+    });
+  }
 
   // Handle form submission
   if (quoteForm) {
@@ -1247,23 +1405,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 11. SECURITY LAYER (Prevent Right-Click & Image Dragging)
-  // ==========================================
-  // Disable context menu (right-click) to protect images & text
-  document.addEventListener('contextmenu', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      return;
-    }
-    e.preventDefault();
-  });
-
-  // Disable dragging of images to prevent easy saving/copying
-  document.addEventListener('dragstart', (e) => {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-    }
-  });
-
   // Refresh ScrollTrigger on window load to recalculate heights after media finishes rendering
   window.addEventListener('load', () => {
     if (typeof ScrollTrigger !== 'undefined') {

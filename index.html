@@ -16,6 +16,11 @@
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
+  <!-- Preload Critical Render Path Assets -->
+  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="logo_small.webp" as="image" type="image/webp">
+  <link rel="preload" href="food_picture.webp" as="image" type="image/webp">
+
   <!-- SEO Meta Tags -->
   <meta name="description" content="Disfruta del mejor ceviche fresco de Caracas. Delivery, pick up y catering de barra móvil, shots de ceviche, paellas y arroces para tus eventos especiales. ¡Haz tu pedido ahora por WhatsApp!">
   <meta name="keywords" content="ceviche caracas, barra movil caracas, catering caracas, delivery ceviche caracas, paellas caracas, ceviche y sabor, comida caribeña caracas">
@@ -41,17 +46,24 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css">
   
-  <!-- Phosphor Icons for premium thin iconography -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <!-- Phosphor Icons for premium thin iconography (Non-blocking Async Load) -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" as="style">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  </noscript>
 </head>
 <body>
   <!-- Fixed Noise Overlay -->
   <div class="noise-overlay" aria-hidden="true"></div>
 
   <!-- Floating Toast Notification (Copy fallback) -->
-  <div class="toast-notification" id="toastNotification">
+  <div class="toast-notification" id="toastNotification" role="status" aria-live="polite">
     Pedido copiado al portapapeles. ¡Pégalo en WhatsApp!
   </div>
+
+  <!-- Hidden Live Announcer for Cart Actions -->
+  <div class="sr-only" id="cartLiveAnnouncer" aria-live="polite"></div>
 
   <!-- Floating WhatsApp Escape Hatch -->
   <a href="https://wa.me/584122102463?text=Hola%20Ceviche%20y%20Sabor!%20Quiero%20hacer%20una%20consulta." 
@@ -88,16 +100,16 @@
           <i class="ph ph-shopping-bag" style="font-size: 1.5rem;"></i>
           <span class="cart-badge" id="cartBadge">0</span>
         </button>
-        <a href="#menu-section" class="btn btn-primary nav-cta-desktop" style="min-height: 48px; padding: 0.65rem 1.25rem; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center;">Pedir Ahora</a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menú">
-          <i class="ph ph-list" style="font-size: 1.75rem;"></i>
+        <a href="#menu-section" class="btn btn-primary nav-cta-desktop">Pedir Ahora</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menú" aria-expanded="false" aria-controls="mobileNavOverlay">
+          <i class="ph ph-list" aria-hidden="true" style="font-size: 1.75rem;"></i>
         </button>
       </div>
     </div>
   </header>
 
   <!-- Mobile Navigation Overlay -->
-  <div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <nav class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Navegación móvil" inert>
     <ul class="mobile-links">
       <li><a href="#menu-section" class="mobile-nav-link">El Menú</a></li>
       <li><a href="#about-section" class="mobile-nav-link">Nosotros</a></li>
@@ -107,7 +119,7 @@
         <a href="https://wa.me/584122102463" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;">Pedir por WhatsApp</a>
       </li>
     </ul>
-  </div>
+  </nav>
 
   <!-- Section 1: Hero Section -->
   <section class="hero" id="hero">
@@ -180,8 +192,8 @@
         
         <!-- Video Tile (6col x 1row) -->
         <div class="bento-item bento-item-video">
-          <video class="bento-video" loop muted playsinline preload="metadata" poster="comidas2.webp" id="bentoVideo">
-            <source src="food video.mp4" type="video/mp4">
+          <video class="bento-video lazy-video" loop muted playsinline preload="none" poster="comidas2.webp" id="bentoVideo" data-src="food video.mp4">
+            <source src="" type="video/mp4">
           </video>
           <div class="bento-label-bottom">Preparación artesanal al instante</div>
         </div>
@@ -212,8 +224,8 @@
   <section class="section-py promotion-section" id="bar-promo-section">
     <div class="container promo-grid-container">
       <div class="promo-video-wrapper">
-        <video class="promo-video" autoplay loop muted playsinline preload="metadata" poster="food_picture.webp">
-          <source src="ceviche barra movil video.mp4" type="video/mp4">
+        <video class="promo-video lazy-video" autoplay loop muted playsinline preload="none" poster="food_picture.webp" data-src="ceviche barra movil video.mp4">
+          <source src="" type="video/mp4">
         </video>
       </div>
       <div class="promo-content">
@@ -258,12 +270,12 @@
       </div>
 
       <!-- Category Filter Tabs -->
-      <div class="menu-tabs" id="menuTabs">
-        <button class="tab-btn active" data-category="todos">Todos</button>
-        <button class="tab-btn" data-category="ceviches">Especial de Ceviches</button>
-        <button class="tab-btn" data-category="bandejas">Bandejas y Barcos</button>
-        <button class="tab-btn" data-category="extras">Raciones y Extras</button>
-        <button class="tab-btn" data-category="bebidas">Bebidas</button>
+      <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Categorías de platillos">
+        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="catalogTrack" data-category="todos">Todos</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="catalogTrack" data-category="ceviches">Especial de Ceviches</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="catalogTrack" data-category="bandejas">Bandejas y Barcos</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="catalogTrack" data-category="extras">Raciones y Extras</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="catalogTrack" data-category="bebidas">Bebidas</button>
       </div>
 
       <!-- Category Scroll Track -->
@@ -773,8 +785,8 @@
               <button type="button" id="openBarQuoteBtn" class="btn btn-secondary">Cotizar Barra</button>
             </div>
             <div class="service-media">
-              <video class="service-video-element" loop muted playsinline preload="metadata" poster="food_picture.webp" id="servicesVideo">
-                <source src="ceviche barra movil video.mp4" type="video/mp4">
+              <video class="service-video-element lazy-video" loop muted playsinline preload="none" poster="food_picture.webp" id="servicesVideo" data-src="ceviche barra movil video.mp4">
+                <source src="" type="video/mp4">
               </video>
             </div>
           </div>
@@ -806,23 +818,23 @@
       <!-- Left column: Influencer video click to play -->
       <div class="influencer-video-wrapper">
         <video class="influencer-video" loop playsinline preload="none" id="influencerVideo">
-          <source src="influecers trying food.mp4" type="video/mp4">
+          <source src="" type="video/mp4">
           Tu navegador no soporta video.
         </video>
         <!-- Poster custom overlay to avoid 29MB load on mobile data -->
-        <div class="video-poster-overlay" id="videoPoster" style="background-image: linear-gradient(rgba(14,14,14,0.2), rgba(14,14,14,0.7)), url('food_picture.webp');">
-          <div class="play-btn-glow">
+        <button type="button" class="video-poster-overlay" id="videoPoster" style="background-image: linear-gradient(rgba(14,14,14,0.2), rgba(14,14,14,0.7)), url('food_picture.webp');" aria-label="Reproducir video testimonial de probaderaa, probando barco de ceviche Afrodita por 30 dólares">
+          <div class="play-btn-glow" aria-hidden="true">
             <i class="ph ph-play"></i>
           </div>
           
-          <div class="video-testimonial-caption">
+          <div class="video-testimonial-caption" aria-hidden="true">
             <div class="testimonial-badge-row">
               <span class="testimonial-tag"><i class="ph-fill ph-instagram-logo"></i> @probaderaa</span>
               <span class="testimonial-price">Barco: $30</span>
             </div>
             <p class="testimonial-context">PROBANDO el barco de ceviche de Afrodita &mdash; @cevicheysabor #PROBADERA</p>
           </div>
-        </div>
+        </button>
       </div>
       
       <!-- Right column: Reviews -->
@@ -956,7 +968,8 @@
           class="map-iframe"
           src="https://maps.google.com/maps?q=Caracas,%20Venezuela&t=&z=13&ie=UTF8&iwloc=&output=embed" 
           allowfullscreen="" 
-          loading="lazy">
+          loading="lazy"
+          title="Mapa interactivo de Caracas que muestra la zona de cobertura de delivery y pick up de Ceviche y Sabor">
         </iframe>
       </div>
     </div>
@@ -1006,13 +1019,13 @@
     </div>
   </footer>
 
-  <!-- Cart Slide Drawer / Mobile Bottom Sheet -->
+  <!-- Shopping Cart Side Drawer / Bottom Sheet -->
   <div class="cart-overlay" id="cartOverlay"></div>
   
-  <aside class="cart-panel" id="cartPanel">
+  <aside class="cart-panel" id="cartPanel" role="dialog" aria-modal="true" aria-labelledby="cartTitle" inert>
     <div class="bottom-sheet-handle"></div>
     <div class="cart-header">
-      <h2 class="cart-title">Tu Pedido</h2>
+      <h2 class="cart-title" id="cartTitle">Tu Pedido</h2>
       <button type="button" class="btn-clear-cart" id="btnClearCart" style="background: transparent; border: none; color: var(--gold-vivid); font-family: var(--font-body); font-weight: 600; cursor: pointer; font-size: 0.95rem; margin-left: auto; margin-right: 1.5rem; display: none;">Vaciar</button>
       <button class="cart-close-btn" id="cartCloseBtn" aria-label="Cerrar Carrito">
         <i class="ph ph-x"></i>
@@ -1083,7 +1096,7 @@
 
   <!-- Event Quote Modal -->
   <div class="quote-modal-overlay" id="quoteModalOverlay"></div>
-  <dialog class="quote-modal" id="quoteModal">
+  <dialog class="quote-modal" id="quoteModal" aria-labelledby="quoteModalTitleText" aria-modal="true" inert>
     <div class="quote-modal-header">
       <h2 class="quote-modal-title" id="quoteModalTitleHeader"><i class="ph ph-calendar" id="quoteModalIcon" style="color: var(--gold-vivid);"></i> <span id="quoteModalTitleText">Cotizar Evento</span></h2>
       <button class="quote-modal-close-btn" id="quoteModalCloseBtn" aria-label="Cerrar Cotización">
