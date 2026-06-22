@@ -45,6 +45,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 </head>
 <body>
+  <!-- Fixed Noise Overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <!-- Floating Toast Notification (Copy fallback) -->
   <div class="toast-notification" id="toastNotification">
@@ -867,8 +869,16 @@
       <div class="steps-container">
         <!-- SVG diagonal lines connectors -->
         <svg class="step-connectors" viewBox="0 0 1200 400" preserveAspectRatio="none">
-          <path class="connector-path" d="M 250,150 C 400,150 500,200 600,200" id="connector-1"></path>
-          <path class="connector-path" d="M 750,220 C 850,220 950,280 1000,300" id="connector-2"></path>
+          <defs>
+            <mask id="connector-mask-1">
+              <path class="connector-mask-path" d="M 250,150 C 400,150 500,200 600,200" fill="none" stroke="white" stroke-width="4" id="mask-path-1"></path>
+            </mask>
+            <mask id="connector-mask-2">
+              <path class="connector-mask-path" d="M 750,220 C 850,220 950,280 1000,300" fill="none" stroke="white" stroke-width="4" id="mask-path-2"></path>
+            </mask>
+          </defs>
+          <path class="connector-path" d="M 250,150 C 400,150 500,200 600,200" id="connector-1" mask="url(#connector-mask-1)"></path>
+          <path class="connector-path" d="M 750,220 C 850,220 950,280 1000,300" id="connector-2" mask="url(#connector-mask-2)"></path>
         </svg>
 
         <div class="step-row">
@@ -1128,6 +1138,8 @@
   </dialog>
 
   <!-- Scripts -->
+  <!-- Lenis for smooth scrolling -->
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <!-- GSAP for core scroll stacking animations (CDN) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>

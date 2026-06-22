@@ -44,6 +44,8 @@
   
   /* Transition speed */
   --t-smooth:      0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --t-cinematic:   0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-elastic:  cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Reset & Base Styles */
@@ -65,6 +67,17 @@ html {
 body {
   overflow-x: hidden;
   background-color: var(--ink-deep);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 /* Custom Scrollbar */
@@ -2661,5 +2674,66 @@ a.info-val:hover {
   .bento-stat-label {
     font-size: 0.75rem;
   }
+}
+
+/* ==========================================
+   IMMERSIVE MOTION DESIGN & TEXTURE SYSTEM
+   ========================================== */
+
+/* Fixed Cinematic Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  mix-blend-mode: overlay;
+}
+
+/* Glassmorphic border refraction & Double-Bezel look */
+.menu-card, .bento-item, .service-card-inner {
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06), 
+              0 10px 30px -10px rgba(0, 0, 0, 0.7);
+  transition: border-color var(--t-smooth), transform var(--t-smooth), box-shadow var(--t-smooth) !important;
+}
+
+.menu-card:hover, .bento-item:hover {
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 
+              0 20px 40px -10px rgba(0, 0, 0, 0.9);
+}
+
+/* Text-scrubbing elements */
+.scrub-word {
+  display: inline-block;
+  opacity: 0.15;
+  will-change: opacity;
+  transition: opacity 0.15s ease;
+}
+
+/* Connector masks for path scroll reveals */
+.connector-mask-path {
+  will-change: stroke-dashoffset;
+}
+
+/* Lenis Smooth Scroll Recommended styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 

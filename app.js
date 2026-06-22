@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  let lenisInstance = null;
   
   // ==========================================
   // 1. DATA DEFINITIONS (Product Catalog)
@@ -378,12 +379,14 @@ document.addEventListener('DOMContentLoaded', () => {
     cartOverlay.classList.add('open');
     cartPanel.classList.add('open');
     document.body.style.overflow = 'hidden';
+    if (lenisInstance) lenisInstance.stop();
   }
 
   function closeCart() {
     cartOverlay.classList.remove('open');
     cartPanel.classList.remove('open');
     document.body.style.overflow = 'auto';
+    if (lenisInstance) lenisInstance.start();
   }
 
   cartTrigger.addEventListener('click', openCart);
@@ -806,9 +809,204 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Run GSAP sticky stack only on Desktop viewports (> 768px)
-    let mm = gsap.matchMedia();
+    // 1. Initialize Lenis Smooth Scroll
+    if (typeof Lenis !== 'undefined') {
+      lenisInstance = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        mouseMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      });
 
+      // Update ScrollTrigger on Lenis scroll
+      lenisInstance.on('scroll', ScrollTrigger.update);
+
+      // Connect Lenis animations with GSAP ticker
+      gsap.ticker.add((time) => {
+        lenisInstance.raf(time * 1000);
+      });
+
+      // Prevent lag smoothing issues between Lenis & GSAP
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    // 2. Intercept Anchor Link clicks for Smooth Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetEl = document.querySelector(targetId);
+        if (targetEl && lenisInstance) {
+          lenisInstance.scrollTo(targetEl, {
+            offset: -80, // Offset for sticky header
+            duration: 1.5,
+            immediate: false
+          });
+        } else if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // 3. Hero Cinematic Entrance Animations
+    const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    heroTl.from(".hero-title", {
+      y: 100,
+      opacity: 0,
+      duration: 1.4,
+      delay: 0.2
+    })
+    .from(".hero-subtext", {
+      y: 40,
+      opacity: 0,
+      duration: 1.2
+    }, "-=1.0")
+    .from(".hero-actions .btn", {
+      y: 30,
+      opacity: 0,
+      duration: 1.0,
+      stagger: 0.15,
+      ease: "power3.out"
+    }, "-=0.9")
+    .fromTo(".hero-media-wrapper", 
+      {
+        clipPath: "inset(12% 12% 12% 12% rounded 32px)",
+        scale: 0.85,
+        opacity: 0
+      },
+      {
+        clipPath: "inset(0% 0% 0% 0% rounded 24px)",
+        scale: 1,
+        opacity: 1,
+        duration: 1.6,
+        ease: "power4.inOut"
+      },
+      "-=1.4"
+    );
+
+    // 4. Parallax Scroll Animations
+    // Parallax Hero Video background
+    gsap.to(".hero-video", {
+      yPercent: 15,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // Parallax Bento item large image
+    gsap.to(".bento-item-large .bento-img", {
+      yPercent: 10,
+      scale: 1.1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".bento-grid",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // Parallax Promotional Section video
+    gsap.to(".promo-video", {
+      yPercent: 12,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".promotion-section",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // 5. Section Header Slide Reveals
+    const headers = gsap.utils.toArray(".section-header");
+    headers.forEach(header => {
+      gsap.from(header, {
+        opacity: 0,
+        y: 40,
+        duration: 1.0,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: header,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
+
+    // 6. Bento Grid Staggered Reveal
+    gsap.from(".bento-item", {
+      y: 60,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.12,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".bento-grid",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // 7. Word-by-Word Text Scrubbing Reveal for Bento Caption
+    const bentoText = document.querySelector('.bento-caption-text');
+    if (bentoText) {
+      const words = bentoText.textContent.trim().split(/\s+/);
+      bentoText.innerHTML = words.map(word => `<span class="scrub-word">${word}</span>`).join(' ');
+      
+      gsap.fromTo(bentoText.querySelectorAll('.scrub-word'), 
+        { opacity: 0.15 },
+        { 
+          opacity: 1, 
+          stagger: 0.05, 
+          scrollTrigger: {
+            trigger: bentoText,
+            start: "top 85%",
+            end: "bottom 65%",
+            scrub: true,
+          }
+        }
+      );
+    }
+
+    // 8. Promo Content Staggered Reveal
+    const promoTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".promotion-section",
+        start: "top 75%",
+        toggleActions: "play none none none"
+      }
+    });
+    promoTl.from(".promo-eyebrow", { opacity: 0, y: 20, duration: 0.6 })
+      .from(".promo-title", { opacity: 0, y: 30, duration: 0.8 }, "-=0.4")
+      .from(".promo-desc", { opacity: 0, y: 20, duration: 0.8 }, "-=0.6")
+      .from(".promo-list li", { opacity: 0, y: 15, stagger: 0.1, duration: 0.6 }, "-=0.4")
+      .from(".promotion-section .btn", { opacity: 0, scale: 0.9, duration: 0.6 }, "-=0.3");
+
+    // 9. Menu Cards Staggered Entry
+    gsap.from(".catalog-scroll-wrapper", {
+      opacity: 0,
+      y: 50,
+      duration: 1.0,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#menu-section",
+        start: "top 75%",
+      }
+    });
+
+    // 10. Services Cards Stacking (Desktop Pinning & Scaling)
+    let mm = gsap.matchMedia();
     mm.add("(min-width: 768.1px)", () => {
       const cards = gsap.utils.toArray(".stack-card");
       
@@ -840,6 +1038,91 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
+
+    // 11. SVG Connectors & Steps Scroll Reveal
+    const maskPath1 = document.getElementById('mask-path-1');
+    const maskPath2 = document.getElementById('mask-path-2');
+    
+    if (maskPath1 && maskPath2) {
+      [maskPath1, maskPath2].forEach((path, index) => {
+        const length = path.getTotalLength();
+        // Set initial state for path dash
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+        
+        gsap.to(path, {
+          strokeDashoffset: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".steps-container",
+            start: index === 0 ? "top 70%" : "top 50%",
+            end: index === 0 ? "center 50%" : "bottom 70%",
+            scrub: true
+          }
+        });
+      });
+    }
+
+    gsap.from(".step-card", {
+      y: 50,
+      opacity: 0,
+      duration: 1.0,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".steps-container",
+        start: "top 70%",
+      }
+    });
+
+    // 12. Reviews Staggered Reveal
+    gsap.from(".review-item", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".reviews-wrapper",
+        start: "top 80%",
+      }
+    });
+    
+    gsap.from(".influencer-video-wrapper", {
+      opacity: 0,
+      scale: 0.95,
+      duration: 1.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".influencer-video-wrapper",
+        start: "top 80%",
+      }
+    });
+
+    // 13. Contact Panel & Map Reveal
+    const contactTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".contact-grid",
+        start: "top 80%",
+      }
+    });
+    contactTl.from(".contact-info-panel .info-group", {
+      opacity: 0,
+      x: -30,
+      stagger: 0.12,
+      duration: 0.8,
+      ease: "power2.out"
+    })
+    .from(".contact-info-panel .social-links", {
+      opacity: 0,
+      y: 20,
+      duration: 0.6
+    }, "-=0.4")
+    .from(".map-wrapper", {
+      opacity: 0,
+      scale: 0.95,
+      duration: 1.0,
+      ease: "power2.out"
+    }, "-=0.8");
   }
 
 
@@ -875,6 +1158,7 @@ document.addEventListener('DOMContentLoaded', () => {
       quoteModalOverlay.classList.add('open');
       quoteModal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      if (lenisInstance) lenisInstance.stop();
     }
   }
 
@@ -883,6 +1167,7 @@ document.addEventListener('DOMContentLoaded', () => {
       quoteModalOverlay.classList.remove('open');
       quoteModal.classList.remove('open');
       document.body.style.overflow = 'auto';
+      if (lenisInstance) lenisInstance.start();
     }
   }
 
@@ -960,6 +1245,24 @@ document.addEventListener('DOMContentLoaded', () => {
       quoteForm.reset();
     });
   }
+
+  // ==========================================
+  // 11. SECURITY LAYER (Prevent Right-Click & Image Dragging)
+  // ==========================================
+  // Disable context menu (right-click) to protect images & text
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      return;
+    }
+    e.preventDefault();
+  });
+
+  // Disable dragging of images to prevent easy saving/copying
+  document.addEventListener('dragstart', (e) => {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+    }
+  });
 
   // Refresh ScrollTrigger on window load to recalculate heights after media finishes rendering
   window.addEventListener('load', () => {
