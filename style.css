@@ -2545,3 +2545,32 @@ a.info-val:hover {
     padding: 1.25rem 1.5rem;
   }
 }
+
+/* ==========================================
+   MOBILE UX/UI OPTIMIZATIONS (AUDIT CORRECTIONS)
+   ========================================== */
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: clamp(2.25rem, 10vw, 3rem);
+    line-height: 0.9;
+  }
+  
+  .hero-subtext {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .bento-item-stat-gold,
+  .bento-item-stat-teal {
+    padding: 1.25rem 1rem;
+  }
+  
+  .bento-stat-num {
+    font-size: 2.75rem;
+  }
+  
+  .bento-stat-label {
+    font-size: 0.75rem;
+  }
+}
+
