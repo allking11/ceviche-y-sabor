@@ -734,6 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollLeft;
     let walkDist = 0;
     let trackOffsetLeft = 0;
+    let preventClick = false;
     
     catalogTrack.addEventListener('pointerdown', (e) => {
       // Only initiate dragging with a mouse and primary click (left-click)
@@ -744,22 +745,29 @@ document.addEventListener('DOMContentLoaded', () => {
       startX = e.pageX - trackOffsetLeft;
       scrollLeft = catalogTrack.scrollLeft;
       walkDist = 0;
-      
-      // Capture the pointer to receive events even if the pointer leaves the track
-      catalogTrack.setPointerCapture(e.pointerId);
+      preventClick = false;
     });
 
     catalogTrack.addEventListener('pointerup', (e) => {
       if (isDown) {
         isDown = false;
         catalogTrack.classList.remove('dragging');
-        catalogTrack.releasePointerCapture(e.pointerId);
+        
+        if (catalogTrack.hasPointerCapture(e.pointerId)) {
+          catalogTrack.releasePointerCapture(e.pointerId);
+        }
         
         // Prevent clicking links/buttons if the mouse has moved significantly (dragging)
         if (Math.abs(walkDist) > 8) {
+          preventClick = true;
           e.preventDefault();
           e.stopPropagation();
         }
+        
+        // Safely reset click prevention shortly after the event loop cycles
+        setTimeout(() => {
+          preventClick = false;
+        }, 50);
       }
     });
 
@@ -767,7 +775,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isDown) {
         isDown = false;
         catalogTrack.classList.remove('dragging');
-        catalogTrack.releasePointerCapture(e.pointerId);
+        if (catalogTrack.hasPointerCapture(e.pointerId)) {
+          catalogTrack.releasePointerCapture(e.pointerId);
+        }
+        preventClick = false;
       }
     });
 
@@ -782,6 +793,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (Math.abs(walk) > 5) {
         e.preventDefault();
         catalogTrack.classList.add('dragging');
+        
+        if (!catalogTrack.hasPointerCapture(e.pointerId)) {
+          catalogTrack.setPointerCapture(e.pointerId);
+        }
       }
       
       catalogTrack.scrollLeft = scrollLeft - walk;
@@ -789,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Prevent navigation trigger or click event bubble on cards during drag
     catalogTrack.addEventListener('click', (e) => {
-      if (Math.abs(walkDist) > 8) {
+      if (preventClick) {
         e.preventDefault();
         e.stopPropagation();
       }
