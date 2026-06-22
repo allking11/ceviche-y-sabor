@@ -468,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // ==========================================
-  // 5. CATALOG FILTERING LOGIC
+  // 5. CATALOG FILTERING LOGIC (GSAP-Staggered Transitions)
   // ==========================================
   const tabButtons = document.querySelectorAll('#menuTabs .tab-btn');
   const menuCards = document.querySelectorAll('.catalog-track .menu-card');
@@ -480,19 +480,178 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
 
       const filter = btn.dataset.category;
-      
+      const targetCardsToShow = [];
+      const targetCardsToHide = [];
+
       menuCards.forEach(card => {
-        if (filter === 'todos' || card.dataset.category === filter) {
-          card.style.display = 'flex';
+        const isMatch = filter === 'todos' || card.dataset.category === filter;
+        
+        if (isMatch) {
+          targetCardsToShow.push(card);
         } else {
-          card.style.display = 'none';
+          targetCardsToHide.push(card);
         }
       });
 
-      // Scroll catalog back to start
-      document.getElementById('catalogTrack').scrollLeft = 0;
+      // Reset scroll position smoothly
+      const track = document.getElementById('catalogTrack');
+      gsap.to(track, { scrollLeft: 0, duration: 0.3, ease: 'power2.out' });
+
+      // Animate out cards to hide
+      if (targetCardsToHide.length > 0) {
+        gsap.to(targetCardsToHide, {
+          opacity: 0,
+          scale: 0.9,
+          duration: 0.2,
+          overwrite: 'auto',
+          onComplete: () => {
+            targetCardsToHide.forEach(c => c.style.display = 'none');
+            // Animate in matching cards
+            showCards(targetCardsToShow);
+          }
+        });
+      } else {
+        showCards(targetCardsToShow);
+      }
+
+      function showCards(cards) {
+        // Ensure they have flex display but are invisible
+        cards.forEach(c => {
+          c.style.display = 'flex';
+          // Initialize opacity/scale if not already visible
+          if (gsap.getProperty(c, 'opacity') === 1) {
+            gsap.set(c, { opacity: 0, scale: 0.9 });
+          }
+        });
+        
+        gsap.to(cards, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.03,
+          ease: 'back.out(1.15)',
+          overwrite: 'auto'
+        });
+      }
     });
   });
+
+  // ==========================================
+  // 5.5 CATALOG INTERACTIVE NAVIGATION (Desktop & Drag-to-Scroll)
+  // ==========================================
+  const catalogTrack = document.getElementById('catalogTrack');
+  const scrollLeftBtn = document.getElementById('scrollLeftBtn');
+  const scrollRightBtn = document.getElementById('scrollRightBtn');
+  const progressBarFill = document.getElementById('catalogProgressBarFill');
+
+  if (catalogTrack) {
+    // 1. Navigation Button Actions
+    const updateNavButtonsState = () => {
+      const scrollLeft = catalogTrack.scrollLeft;
+      const maxScroll = catalogTrack.scrollWidth - catalogTrack.clientWidth;
+      
+      // Hide left arrow if at start, show if scrolled
+      if (scrollLeft <= 5) {
+        scrollLeftBtn.style.opacity = '0';
+        scrollLeftBtn.style.pointerEvents = 'none';
+      } else {
+        scrollLeftBtn.style.opacity = '1';
+        scrollLeftBtn.style.pointerEvents = 'all';
+      }
+
+      // Hide right arrow if at end, show if not
+      if (scrollLeft >= maxScroll - 5) {
+        scrollRightBtn.style.opacity = '0';
+        scrollRightBtn.style.pointerEvents = 'none';
+      } else {
+        scrollRightBtn.style.opacity = '1';
+        scrollRightBtn.style.pointerEvents = 'all';
+      }
+
+      // Update Scroll Progress Bar
+      if (progressBarFill) {
+        const percentage = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+        progressBarFill.style.width = `${percentage}%`;
+      }
+    };
+
+    // Initialize buttons states on load
+    setTimeout(updateNavButtonsState, 300);
+
+    // Track scroll event to update arrows & progress bar
+    catalogTrack.addEventListener('scroll', updateNavButtonsState, { passive: true });
+
+    // Step size: single card width + gap (340px + 28px = 368px)
+    const stepSize = 368;
+
+    scrollLeftBtn.addEventListener('click', () => {
+      catalogTrack.scrollBy({
+        left: -stepSize,
+        behavior: 'smooth'
+      });
+    });
+
+    scrollRightBtn.addEventListener('click', () => {
+      catalogTrack.scrollBy({
+        left: stepSize,
+        behavior: 'smooth'
+      });
+    });
+
+    // 2. Mouse Drag-to-Scroll (Desktop grab-to-scroll)
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let walkDist = 0;
+    
+    catalogTrack.addEventListener('mousedown', (e) => {
+      isDown = true;
+      catalogTrack.classList.add('dragging');
+      // x coordinate relative to the catalogTrack container
+      startX = e.pageX - catalogTrack.offsetLeft;
+      scrollLeft = catalogTrack.scrollLeft;
+      walkDist = 0;
+    });
+
+    catalogTrack.addEventListener('mouseleave', () => {
+      if (isDown) {
+        isDown = false;
+        catalogTrack.classList.remove('dragging');
+      }
+    });
+
+    catalogTrack.addEventListener('mouseup', (e) => {
+      if (isDown) {
+        isDown = false;
+        catalogTrack.classList.remove('dragging');
+        
+        // Prevent clicking links/buttons if the mouse has moved significantly (dragging)
+        if (Math.abs(walkDist) > 8) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    });
+
+    catalogTrack.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      
+      const x = e.pageX - catalogTrack.offsetLeft;
+      // Multiplier of 1.5 makes scrolling feel responsive and fast
+      const walk = (x - startX) * 1.5;
+      walkDist = walk;
+      catalogTrack.scrollLeft = scrollLeft - walk;
+    });
+
+    // Prevent navigation trigger or click event bubble on cards during drag
+    catalogTrack.addEventListener('click', (e) => {
+      if (Math.abs(walkDist) > 8) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true); // Use capture phase to intercept card clicks early!
+  }
 
   // ==========================================
   // 6. WHATSAPP CHECKOUT FORM SUBMISSION
