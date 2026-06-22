@@ -728,34 +728,33 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // 2. Mouse Drag-to-Scroll (Desktop grab-to-scroll)
+    // 2. Mouse Drag-to-Scroll (Desktop grab-to-scroll using Pointer Events)
     let isDown = false;
     let startX;
     let scrollLeft;
     let walkDist = 0;
     let trackOffsetLeft = 0;
     
-    catalogTrack.addEventListener('mousedown', (e) => {
+    catalogTrack.addEventListener('pointerdown', (e) => {
+      // Only initiate dragging with a mouse and primary click (left-click)
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      
       isDown = true;
       catalogTrack.classList.add('dragging');
       trackOffsetLeft = catalogTrack.offsetLeft; // Cache offsetLeft
-      // x coordinate relative to the catalogTrack container
       startX = e.pageX - trackOffsetLeft;
       scrollLeft = catalogTrack.scrollLeft;
       walkDist = 0;
+      
+      // Capture the pointer to receive events even if the pointer leaves the track
+      catalogTrack.setPointerCapture(e.pointerId);
     });
 
-    catalogTrack.addEventListener('mouseleave', () => {
+    catalogTrack.addEventListener('pointerup', (e) => {
       if (isDown) {
         isDown = false;
         catalogTrack.classList.remove('dragging');
-      }
-    });
-
-    catalogTrack.addEventListener('mouseup', (e) => {
-      if (isDown) {
-        isDown = false;
-        catalogTrack.classList.remove('dragging');
+        catalogTrack.releasePointerCapture(e.pointerId);
         
         // Prevent clicking links/buttons if the mouse has moved significantly (dragging)
         if (Math.abs(walkDist) > 8) {
@@ -765,12 +764,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    catalogTrack.addEventListener('mousemove', (e) => {
+    catalogTrack.addEventListener('pointercancel', (e) => {
+      if (isDown) {
+        isDown = false;
+        catalogTrack.classList.remove('dragging');
+        catalogTrack.releasePointerCapture(e.pointerId);
+      }
+    });
+
+    catalogTrack.addEventListener('pointermove', (e) => {
       if (!isDown) return;
       e.preventDefault();
       
       const x = e.pageX - trackOffsetLeft; // Consume cached offsetLeft to prevent layout thrash
-      // Multiplier of 1.5 makes scrolling feel responsive and fast
       const walk = (x - startX) * 1.5;
       walkDist = walk;
       catalogTrack.scrollLeft = scrollLeft - walk;
