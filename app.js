@@ -4,23 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. DATA DEFINITIONS (Product Catalog)
   // ==========================================
   const productsData = {
-    'cev-01': { name: 'Ceviche Tradicional / Delantero', image: 'food_picture.webp', isVariable: true },
-    'cev-02': { name: 'Ceviche Pasión / Primer Tiempo', image: 'food_picture.webp', isVariable: true },
-    'cev-03': { name: 'Ceviche Trilogía / Segundo Tiempo', image: 'food_picture.webp', isVariable: true },
-    'cev-04': { name: 'Ceviche Delirio / Medio Tiempo', image: 'food_picture.webp', isVariable: true },
-    'cev-05': { name: 'Ceviche Dinamita / Tiempo Xtra', image: 'food_picture.webp', isVariable: true },
-    'cev-06': { name: 'Ceviche Explosión / Campeón', image: 'food_picture.webp', isVariable: true },
-    'ban-01': { name: 'Bandeja Exótica', price: 35, image: 'food_picture.webp', isVariable: false },
-    'ban-02': { name: 'Bandeja Erótica', price: 35, image: 'food_picture.webp', isVariable: false },
-    'ban-03': { name: 'Bandeja Amor', price: 42, image: 'food_picture.webp', isVariable: false },
-    'bar-01': { name: 'Barco Afrodita (3 Personas)', price: 35, image: 'food_picture.webp', isVariable: false },
-    'bar-02': { name: 'Barco Atenea (3 Personas)', price: 32, image: 'food_picture.webp', isVariable: false },
-    'ext-01': { name: 'Calamares Rebosados (150g)', price: 6, image: 'food_picture.webp', isVariable: false },
-    'ext-02': { name: 'Camarones Rebosados (150g)', price: 6, image: 'food_picture.webp', isVariable: false },
-    'beb-01': { name: 'Coca-Cola (1 Litro)', price: 2, image: 'logo_small.webp', isVariable: false },
-    'beb-02': { name: 'Coca-Cola (Lata 355ml)', price: 1, image: 'logo_small.webp', isVariable: false },
-    'beb-03': { name: 'Cerveza Nacional', price: 1.5, image: 'logo_small.webp', isVariable: false },
-    'beb-04': { name: 'Cerveza Internacional', price: 2, image: 'logo_small.webp', isVariable: false }
+    'cev-01': { name: 'Ceviche Tradicional / Delantero', image: 'cev_01_tradicional.webp', isVariable: true },
+    'cev-02': { name: 'Ceviche Pasión / Primer Tiempo', image: 'cev_02_pasion.webp', isVariable: true },
+    'cev-03': { name: 'Ceviche Trilogía / Segundo Tiempo', image: 'cev_03_trilogia.webp', isVariable: true },
+    'cev-04': { name: 'Ceviche Delirio / Medio Tiempo', image: 'cev_04_delirio.webp', isVariable: true },
+    'cev-05': { name: 'Ceviche Dinamita / Tiempo Xtra', image: 'cev_05_dinamita.webp', isVariable: true },
+    'cev-06': { name: 'Ceviche Explosión / Campeón', image: 'cev_06_explosion.webp', isVariable: true },
+    'ban-01': { name: 'Bandeja Exótica', price: 35, image: 'ban_01_exotica.webp', isVariable: false },
+    'ban-02': { name: 'Bandeja Erótica', price: 35, image: 'ban_02_erotica.webp', isVariable: false },
+    'ban-03': { name: 'Bandeja Amor', price: 42, image: 'ban_03_amor.webp', isVariable: false },
+    'bar-01': { name: 'Barco Afrodita (3 Personas)', price: 35, image: 'bar_01_afrodita.webp', isVariable: false },
+    'bar-02': { name: 'Barco Atenea (3 Personas)', price: 32, image: 'bar_02_atenea.webp', isVariable: false },
+    'ext-01': { name: 'Calamares Rebosados (150g)', price: 6, image: 'ext_01_calamares.webp', isVariable: false },
+    'ext-02': { name: 'Camarones Rebosados (150g)', price: 6, image: 'ext_02_camarones.webp', isVariable: false },
+    'beb-01': { name: 'Coca-Cola (1 Litro)', price: 2, image: 'beb_01_coke.webp', isVariable: false },
+    'beb-02': { name: 'Coca-Cola (Lata 355ml)', price: 1, image: 'beb_01_coke.webp', isVariable: false },
+    'beb-03': { name: 'Cerveza Nacional', price: 1.5, image: 'beb_03_beer_nac.webp', isVariable: false },
+    'beb-04': { name: 'Cerveza Internacional', price: 2, image: 'beb_04_beer_int.webp', isVariable: false }
   };
 
   // ==========================================
