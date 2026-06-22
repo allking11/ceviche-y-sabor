@@ -208,7 +208,6 @@ p, .font-body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  height: 70px;
 }
 
 .nav-container {
@@ -415,6 +414,7 @@ p, .font-body {
   top: 0;
   left: 0;
   width: 100vw;
+  height: 100vh; /* Fallback for older viewport engines */
   height: 100dvh;
   background-color: var(--ink-deep);
   z-index: 105;
@@ -1077,10 +1077,12 @@ p, .font-body {
 
 .catalog-progress-bar-fill {
   height: 100%;
-  width: 0%;
+  width: 100%; /* Fill initial width to allow transform scaling */
   background-color: var(--gold-vivid);
   border-radius: var(--radius-pill);
-  transition: width 0.15s ease-out;
+  transform: scaleX(0); /* Composited scale */
+  transform-origin: left;
+  transition: transform 0.15s ease-out; /* GPU-accelerated transition */
 }
 
 @media (max-width: 768px) {
@@ -2148,6 +2150,7 @@ a.info-val:hover {
   right: 0;
   width: 100%;
   max-width: 480px;
+  height: 100vh; /* Fallback for older engines */
   height: 100dvh;
   background-color: var(--ink-elevated);
   border-left: 1px solid var(--ink-border);
@@ -2443,7 +2446,9 @@ a.info-val:hover {
     bottom: 0;
     right: 0;
     width: 100%;
+    height: 85vh; /* Fallback */
     height: 85dvh;
+    max-height: 85vh; /* Fallback */
     max-height: 85dvh;
     border-left: none;
     border-top: 1px solid var(--ink-border);
@@ -2514,10 +2519,11 @@ a.info-val:hover {
   border-radius: var(--radius-card);
   width: 90%;
   max-width: 520px;
+  max-height: 90vh; /* Fallback */
   max-height: 90dvh;
   margin: 0;
   padding: 0;
-  display: flex;
+  display: none; /* Hide completely when closed to save rendering costs */
   flex-direction: column;
   color: var(--text-primary);
   z-index: 300;
@@ -2526,6 +2532,18 @@ a.info-val:hover {
   transition: transform var(--t-smooth), opacity var(--t-smooth);
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
   outline: none;
+}
+
+/* Ensure display: flex is only applied when the modal is open */
+.quote-modal[open] {
+  display: flex;
+}
+
+/* Native dialog backdrop transparent overlay reset to avoid double-darkening */
+.quote-modal::backdrop {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .quote-modal.open {

@@ -701,7 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update Scroll Progress Bar
       if (progressBarFill) {
         const percentage = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
-        progressBarFill.style.width = `${percentage}%`;
+        progressBarFill.style.transform = `scaleX(${percentage / 100})`;
       }
     };
 
@@ -740,7 +740,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
       
       isDown = true;
-      catalogTrack.classList.add('dragging');
       trackOffsetLeft = catalogTrack.offsetLeft; // Cache offsetLeft
       startX = e.pageX - trackOffsetLeft;
       scrollLeft = catalogTrack.scrollLeft;
@@ -774,11 +773,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     catalogTrack.addEventListener('pointermove', (e) => {
       if (!isDown) return;
-      e.preventDefault();
       
       const x = e.pageX - trackOffsetLeft; // Consume cached offsetLeft to prevent layout thrash
       const walk = (x - startX) * 1.5;
       walkDist = walk;
+
+      // Only mark as dragging if pointer movement exceeds a minor threshold (prevent click block)
+      if (Math.abs(walk) > 5) {
+        e.preventDefault();
+        catalogTrack.classList.add('dragging');
+      }
+      
       catalogTrack.scrollLeft = scrollLeft - walk;
     });
 
