@@ -2474,7 +2474,7 @@ a.info-val:hover {
   position: fixed;
   bottom: 2rem;
   left: 50%;
-  transform: translate3d(-50%, 100px, 0);
+  transform: translate3d(-50%, calc(100% + 3rem), 0);
   background-color: var(--ink-elevated);
   border: 1px solid var(--gold-vivid);
   color: var(--text-primary);

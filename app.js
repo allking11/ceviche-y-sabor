@@ -896,26 +896,38 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('No pudimos abrir WhatsApp ni copiar el pedido. Por favor, cópialo manualmente.');
     };
 
-    // Attempt to open WhatsApp window
-    const newWindow = window.open(whatsappUrl, '_blank');
-    
-    if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-      // Popup blocked or deep-linking failed, use clipboard fallback
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(message)
-          .then(handleCopySuccess)
-          .catch(() => fallbackCopyText(message, handleCopySuccess, handleCopyError));
-      } else {
-        fallbackCopyText(message, handleCopySuccess, handleCopyError);
-      }
-    } else {
-      // Success opening window (redirecting)
-      toastNotification.textContent = 'Redirigiendo a WhatsApp... ¡Tu pedido se mantendrá guardado!';
+    // Detect if we are on a mobile device or if popup fails
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // On mobile, redirecting the current tab is much more reliable and avoids popup blockers
+      toastNotification.textContent = 'Abriendo WhatsApp...';
       toastNotification.classList.add('active');
       setTimeout(() => {
         toastNotification.classList.remove('active');
       }, 5000);
       closeCart();
+      window.location.href = whatsappUrl;
+    } else {
+      // On desktop, try opening a new tab
+      const newWindow = window.open(whatsappUrl, '_blank');
+      if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+        // Popup blocked, use clipboard fallback
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(message)
+            .then(handleCopySuccess)
+            .catch(() => fallbackCopyText(message, handleCopySuccess, handleCopyError));
+        } else {
+          fallbackCopyText(message, handleCopySuccess, handleCopyError);
+        }
+      } else {
+        toastNotification.textContent = 'Redirigiendo a WhatsApp... ¡Tu pedido se mantendrá guardado!';
+        toastNotification.classList.add('active');
+        setTimeout(() => {
+          toastNotification.classList.remove('active');
+        }, 5000);
+        closeCart();
+      }
     }
   });
 
