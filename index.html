@@ -9,6 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Preconnect & DNS-prefetch for external CDNs -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
   <!-- SEO Meta Tags -->
   <meta name="description" content="Disfruta del mejor ceviche fresco de Caracas. Delivery, pick up y catering de barra móvil, shots de ceviche, paellas y arroces para tus eventos especiales. ¡Haz tu pedido ahora por WhatsApp!">
@@ -21,16 +27,16 @@
   <meta property="og:url" content="https://cevicheysabor.com/">
   <meta property="og:title" content="Ceviche y Sabor — El sabor del mar en tu mesa">
   <meta property="og:description" content="El ceviche más fresco de Caracas directo a tu puerta o en tu evento. Descubre nuestro menú de ceviches tradicionales, barcos, paellas y nuestra barra móvil.">
-  <meta property="og:image" content="LOGO.jpg">
+  <meta property="og:image" content="logo.webp">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:title" content="Ceviche y Sabor — Ceviche Fresco en Caracas">
   <meta property="twitter:description" content="El ceviche más fresco de Caracas. Barra móvil para eventos, delivery y pick up los fines de semana.">
-  <meta property="twitter:image" content="LOGO.jpg">
+  <meta property="twitter:image" content="logo.webp">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="LOGO.jpg">
+  <link rel="icon" type="image/webp" href="logo.webp">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css">
@@ -59,7 +65,7 @@
   <header class="header" id="header">
     <div class="container nav-container">
       <a href="#hero" class="logo-link">
-        <img src="LOGO.jpg" alt="Logo de Ceviche y Sabor" class="logo-img">
+        <img src="logo_small.webp" alt="Logo de Ceviche y Sabor" class="logo-img" decoding="async" width="50" height="50">
         <div class="logo-text">
           <span>Ceviche</span>
           <span>y Sabor</span>
@@ -121,7 +127,7 @@
       </div>
       
       <div class="hero-media-wrapper">
-        <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="food picture.jpg">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="food_picture.webp">
           <source src="Food showcase video.mp4" type="video/mp4">
           Tu navegador no soporta reproducción de video.
         </video>
@@ -165,8 +171,8 @@
       <div class="bento-grid">
         <!-- Large Photo Tile (6col x 2row) -->
         <div class="bento-item bento-item-large">
-          <img src="food picture.jpg" alt="Presentación de platos de Ceviche y Sabor listos para entrega con tostones crujientes" class="bento-img">
-          <img src="LOGO.jpg" alt="" class="bento-watermark">
+          <img src="food_picture.webp" alt="Presentación de platos de Ceviche y Sabor listos para entrega con tostones crujientes" class="bento-img" loading="lazy" decoding="async" width="800" height="622">
+          <img src="logo_small.webp" alt="" class="bento-watermark" loading="lazy" decoding="async" width="256" height="256">
           <div class="bento-label-bottom">Nuestros ceviches frescos listos para delivery y eventos</div>
         </div>
         
@@ -204,7 +210,7 @@
   <section class="section-py promotion-section" id="bar-promo-section">
     <div class="container promo-grid-container">
       <div class="promo-video-wrapper">
-        <video class="promo-video" autoplay loop muted playsinline preload="metadata" poster="food picture.jpg">
+        <video class="promo-video" autoplay loop muted playsinline preload="metadata" poster="food_picture.webp">
           <source src="ceviche barra movil video.mp4" type="video/mp4">
         </video>
       </div>
@@ -265,7 +271,7 @@
           <!-- Product Card 1: Ceviche Tradicional -->
           <div class="menu-card" data-category="ceviches" data-id="cev-01">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Ceviche Tradicional" class="menu-card-img">
+              <img src="food_picture.webp" alt="Ceviche Tradicional" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Pescado Blanco</span>
             </div>
             <div class="menu-card-content">
@@ -298,7 +304,7 @@
           <!-- Product Card 2: Ceviche Pasión -->
           <div class="menu-card" data-category="ceviches" data-id="cev-02">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Ceviche Pasión" class="menu-card-img">
+              <img src="food_picture.webp" alt="Ceviche Pasión" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Pescado y Camarones</span>
             </div>
             <div class="menu-card-content">
@@ -331,7 +337,7 @@
           <!-- Product Card 3: Ceviche Trilogía -->
           <div class="menu-card" data-category="ceviches" data-id="cev-03">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Ceviche Trilogía" class="menu-card-img">
+              <img src="food_picture.webp" alt="Ceviche Trilogía" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Pesca, Camarón y Pulpo</span>
             </div>
             <div class="menu-card-content">
@@ -364,7 +370,7 @@
           <!-- Product Card 4: Ceviche Delirio -->
           <div class="menu-card" data-category="ceviches" data-id="cev-04">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Ceviche Delirio" class="menu-card-img">
+              <img src="food_picture.webp" alt="Ceviche Delirio" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Pesca, Camarón y Cangrejo</span>
             </div>
             <div class="menu-card-content">
@@ -397,7 +403,7 @@
           <!-- Product Card 5: Ceviche Dinamita -->
           <div class="menu-card" data-category="ceviches" data-id="cev-05">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Ceviche Dinamita" class="menu-card-img">
+              <img src="food_picture.webp" alt="Ceviche Dinamita" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Pesca, Camarón y Calamar</span>
             </div>
             <div class="menu-card-content">
@@ -430,7 +436,7 @@
           <!-- Product Card 6: Ceviche Explosión -->
           <div class="menu-card" data-category="ceviches" data-id="cev-06">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Ceviche Explosión" class="menu-card-img">
+              <img src="food_picture.webp" alt="Ceviche Explosión" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">El Campeón de la Casa</span>
             </div>
             <div class="menu-card-content">
@@ -463,7 +469,7 @@
           <!-- Product Card 7: Bandeja Exótica -->
           <div class="menu-card" data-category="bandejas" data-id="ban-01">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Bandeja Exótica" class="menu-card-img">
+              <img src="food_picture.webp" alt="Bandeja Exótica" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Combo 3 Variedades</span>
             </div>
             <div class="menu-card-content">
@@ -486,7 +492,7 @@
           <!-- Product Card 8: Bandeja Erótica -->
           <div class="menu-card" data-category="bandejas" data-id="ban-02">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Bandeja Erótica" class="menu-card-img">
+              <img src="food_picture.webp" alt="Bandeja Erótica" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Combo 3 Sabores</span>
             </div>
             <div class="menu-card-content">
@@ -509,7 +515,7 @@
           <!-- Product Card 9: Bandeja Amor -->
           <div class="menu-card" data-category="bandejas" data-id="ban-03">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Bandeja Amor" class="menu-card-img">
+              <img src="food_picture.webp" alt="Bandeja Amor" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Fórmula Exclusiva</span>
             </div>
             <div class="menu-card-content">
@@ -532,7 +538,7 @@
           <!-- Product Card 10: Barco Afrodita -->
           <div class="menu-card" data-category="bandejas" data-id="bar-01">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Barco Afrodita" class="menu-card-img">
+              <img src="food_picture.webp" alt="Barco Afrodita" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Fines de Semana</span>
             </div>
             <div class="menu-card-content">
@@ -555,7 +561,7 @@
           <!-- Product Card 11: Barco Atenea -->
           <div class="menu-card" data-category="bandejas" data-id="bar-02">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Barco Atenea" class="menu-card-img">
+              <img src="food_picture.webp" alt="Barco Atenea" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Fines de Semana</span>
             </div>
             <div class="menu-card-content">
@@ -578,7 +584,7 @@
           <!-- Product Card 12: Calamares Rebosados -->
           <div class="menu-card" data-category="extras" data-id="ext-01">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Calamares Rebosados" class="menu-card-img">
+              <img src="food_picture.webp" alt="Calamares Rebosados" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Ración Extra</span>
             </div>
             <div class="menu-card-content">
@@ -601,7 +607,7 @@
           <!-- Product Card 13: Camarones Rebosados -->
           <div class="menu-card" data-category="extras" data-id="ext-02">
             <div class="menu-card-img-wrapper">
-              <img src="food picture.jpg" alt="Camarones Rebosados" class="menu-card-img">
+              <img src="food_picture.webp" alt="Camarones Rebosados" class="menu-card-img" loading="lazy" decoding="async" width="800" height="622">
               <span class="menu-card-badge">Ración Extra</span>
             </div>
             <div class="menu-card-content">
@@ -624,7 +630,7 @@
           <!-- Product Card 14: Coca Cola 1L -->
           <div class="menu-card" data-category="bebidas" data-id="beb-01">
             <div class="menu-card-img-wrapper">
-              <img src="LOGO.jpg" alt="Refrescos" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <img src="logo_small.webp" alt="Refrescos" class="menu-card-img" loading="lazy" decoding="async" width="256" height="256" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
               <span class="menu-card-badge">Bebidas</span>
             </div>
             <div class="menu-card-content">
@@ -647,7 +653,7 @@
           <!-- Product Card 15: Coca Cola 355ml -->
           <div class="menu-card" data-category="bebidas" data-id="beb-02">
             <div class="menu-card-img-wrapper">
-              <img src="LOGO.jpg" alt="Refrescos" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <img src="logo_small.webp" alt="Refrescos" class="menu-card-img" loading="lazy" decoding="async" width="256" height="256" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
               <span class="menu-card-badge">Bebidas</span>
             </div>
             <div class="menu-card-content">
@@ -670,7 +676,7 @@
           <!-- Product Card 16: Cerveza Nacional -->
           <div class="menu-card" data-category="bebidas" data-id="beb-03">
             <div class="menu-card-img-wrapper">
-              <img src="LOGO.jpg" alt="Cervezas" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <img src="logo_small.webp" alt="Cervezas" class="menu-card-img" loading="lazy" decoding="async" width="256" height="256" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
               <span class="menu-card-badge">Cervezas</span>
             </div>
             <div class="menu-card-content">
@@ -693,7 +699,7 @@
           <!-- Product Card 17: Cerveza Internacional -->
           <div class="menu-card" data-category="bebidas" data-id="beb-04">
             <div class="menu-card-img-wrapper">
-              <img src="LOGO.jpg" alt="Cervezas" class="menu-card-img" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
+              <img src="logo_small.webp" alt="Cervezas" class="menu-card-img" loading="lazy" decoding="async" width="256" height="256" style="object-fit: contain; padding: 2rem; background-color: var(--ink-card);">
               <span class="menu-card-badge">Cervezas</span>
             </div>
             <div class="menu-card-content">
@@ -739,7 +745,7 @@
               <a href="#menu-section" class="btn btn-primary">Hacer Pedido</a>
             </div>
             <div class="service-media">
-              <img src="food picture.jpg" alt="Delivery de ceviche fresco a domicilio">
+              <img src="food_picture.webp" alt="Delivery de ceviche fresco a domicilio" loading="lazy" decoding="async" width="800" height="622">
             </div>
           </div>
         </div>
@@ -756,7 +762,7 @@
               <button type="button" id="openBarQuoteBtn" class="btn btn-secondary">Cotizar Barra</button>
             </div>
             <div class="service-media">
-              <video class="service-video-element" loop muted playsinline preload="metadata" poster="food picture.jpg" id="servicesVideo">
+              <video class="service-video-element" loop muted playsinline preload="metadata" poster="food_picture.webp" id="servicesVideo">
                 <source src="ceviche barra movil video.mp4" type="video/mp4">
               </video>
             </div>
@@ -775,7 +781,7 @@
               <button type="button" id="openCateringQuoteBtn" class="btn">Solicitar Cotización</button>
             </div>
             <div class="service-media" style="border-color: rgba(0,0,0,0.15);">
-              <img src="comidas2.webp" alt="Servicio de paellas y catering marino de Ceviche y Sabor" style="filter: brightness(0.9);">
+              <img src="comidas2.webp" alt="Servicio de paellas y catering marino de Ceviche y Sabor" style="filter: brightness(0.9);" loading="lazy" decoding="async" width="800" height="811">
             </div>
           </div>
         </div>
@@ -793,7 +799,7 @@
           Tu navegador no soporta video.
         </video>
         <!-- Poster custom overlay to avoid 29MB load on mobile data -->
-        <div class="video-poster-overlay" id="videoPoster" style="background-image: linear-gradient(rgba(14,14,14,0.2), rgba(14,14,14,0.7)), url('food picture.jpg');">
+        <div class="video-poster-overlay" id="videoPoster" style="background-image: linear-gradient(rgba(14,14,14,0.2), rgba(14,14,14,0.7)), url('food_picture.webp');">
           <div class="play-btn-glow">
             <i class="ph ph-play"></i>
           </div>
@@ -942,7 +948,7 @@
     <div class="container footer-top">
       <div class="footer-brand">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <img src="LOGO.jpg" alt="Logo de Ceviche y Sabor" class="footer-logo">
+          <img src="logo_small.webp" alt="Logo de Ceviche y Sabor" class="footer-logo" loading="lazy" decoding="async" width="60" height="60">
           <div class="footer-brand-title">
             Ceviche<span>y Sabor</span>
           </div>
@@ -1114,8 +1120,8 @@
 
   <!-- Scripts -->
   <!-- GSAP for core scroll stacking animations (CDN) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
