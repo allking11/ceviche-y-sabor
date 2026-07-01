@@ -1033,7 +1033,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. Hero Cinematic Entrance Animations
-    const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    const heroTl = gsap.timeline({ 
+      defaults: { ease: "power4.out" },
+      onComplete: () => {
+        document.body.classList.add('page-loaded');
+      }
+    });
     heroTl.from(".hero-title", {
       y: 100,
       opacity: 0,

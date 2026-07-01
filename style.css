@@ -128,9 +128,13 @@ p, .font-body {
   border-radius: var(--radius-button);
   padding: 0.875rem 1.75rem;
   font-size: 1rem;
-  transition: all var(--t-smooth);
+  transition: background-color var(--t-smooth), border-color var(--t-smooth), box-shadow var(--t-smooth);
   min-height: 48px; /* Touch target size */
   text-align: center;
+}
+
+.page-loaded .btn {
+  transition: background-color var(--t-smooth), border-color var(--t-smooth), box-shadow var(--t-smooth), transform var(--t-smooth), opacity var(--t-smooth);
 }
 
 .btn-primary {
