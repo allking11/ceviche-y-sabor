@@ -636,7 +636,7 @@ p, .font-body {
 
 .bento-item {
   border-radius: var(--radius-card);
-  overflow: auto; /* Fallback viewport containment scroll */
+  overflow: hidden;
   border: 1px solid var(--ink-border);
   position: relative;
   background-color: var(--ink-card);
